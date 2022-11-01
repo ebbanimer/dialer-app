@@ -3,7 +3,6 @@ package se.miun.ebni21000.dt031g.dialer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import se.miun.ebni21000.dt031g.dialer.databinding.ActivityCallListBinding
-import se.miun.ebni21000.dt031g.dialer.databinding.ActivityDialBinding
 
 class CallListActivity : AppCompatActivity() {
 

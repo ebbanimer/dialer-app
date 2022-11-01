@@ -17,8 +17,7 @@ class MainActivity : AppCompatActivity() {
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        clickEvents();
-
+        clickEvents()
     }
 
     // Click events
@@ -33,16 +32,16 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        binding.dialBtn.setOnClickListener {
-//            val intent = Intent(this, DialActivity::class.java)
-//            startActivity(intent)
-//        }
-//
-//        binding.dialBtn.setOnClickListener {
-//            val intent = Intent(this, DialActivity::class.java)
-//            startActivity(intent)
-//        }
-//
+        binding.settingsBtn.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.mapBtn.setOnClickListener {
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
+        }
+
 //        binding.dialBtn.setOnClickListener {
 //            val intent = Intent(this, DialActivity::class.java)
 //            startActivity(intent)
