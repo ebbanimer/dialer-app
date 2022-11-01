@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.callBtn.setOnClickListener {
-            val intent = Intent(this, DialActivity::class.java)
+            val intent = Intent(this, CallListActivity::class.java)
             startActivity(intent)
         }
 
