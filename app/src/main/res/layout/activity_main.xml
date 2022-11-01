@@ -38,7 +38,6 @@
         android:id="@+id/settings_btn"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:text="@string/settings"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
