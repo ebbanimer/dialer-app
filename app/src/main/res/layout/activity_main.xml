@@ -9,10 +9,57 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/what_would_you_like_to_do"
+        app:layout_constraintBottom_toTopOf="@+id/dial_btn"
+        app:layout_constraintStart_toStartOf="@+id/settings_btn"
+        app:layout_constraintEnd_toEndOf="@+id/settings_btn" />
+
+    <Button
+        android:id="@+id/dial_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dial"
+        app:layout_constraintBottom_toTopOf="@+id/call_btn"
+        app:layout_constraintStart_toStartOf="@+id/settings_btn"
+        app:layout_constraintEnd_toEndOf="@+id/settings_btn"  />
+
+    <Button
+        android:id="@+id/call_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/call_list"
+        app:layout_constraintBottom_toTopOf="@+id/settings_btn"
+        app:layout_constraintStart_toStartOf="@+id/settings_btn"
+        app:layout_constraintEnd_toEndOf="@+id/settings_btn"  />
+
+    <Button
+        android:id="@+id/settings_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/settings"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/map_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/map"
+        app:layout_constraintTop_toBottomOf="@+id/settings_btn"
+        app:layout_constraintStart_toStartOf="@+id/settings_btn"
+        app:layout_constraintEnd_toEndOf="@+id/settings_btn" />
+
+    <Button
+        android:id="@+id/about_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about"
+        app:layout_constraintTop_toBottomOf="@+id/map_btn"
+        app:layout_constraintStart_toStartOf="@+id/settings_btn"
+        app:layout_constraintEnd_toEndOf="@+id/settings_btn" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
