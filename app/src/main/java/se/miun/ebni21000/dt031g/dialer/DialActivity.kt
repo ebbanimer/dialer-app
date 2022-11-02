@@ -13,7 +13,7 @@ class DialActivity : AppCompatActivity() {
         binding = ActivityDialBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-         setSupportActionBar(binding?.toolbarDial)
+        setSupportActionBar(binding?.toolbarDial)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
