@@ -1,4 +1,4 @@
-package se.miun.ebni21000.dt031g.dialer
+package se.miun.ebni2100.dt031g.dialer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,20 +9,27 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import se.miun.ebni21000.dt031g.dialer.databinding.ActivityMapsBinding
+import se.miun.ebni2100.dt031g.dialer.databinding.ActivityMapsBinding
 
+/**
+ * Activity class for maps.
+ * @author Ebba Nimér
+ */
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
 
+    /**
+     * Upon creation, initialize view-binding, layouts, and map-fragment.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding?.toolbarMap)
+        setSupportActionBar(binding.toolbarMap)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.

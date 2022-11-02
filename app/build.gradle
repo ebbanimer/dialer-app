@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'se.miun.ebni21000.dt031g.dialer'
+    namespace 'se.miun.ebni2100.dt031g.dialer'
     compileSdk 32
 
     defaultConfig {
-        applicationId "se.miun.ebni21000.dt031g.dialer"
+        applicationId "se.miun.ebni2100.dt031g.dialer"
         minSdk 23
         targetSdk 32
         versionCode 1

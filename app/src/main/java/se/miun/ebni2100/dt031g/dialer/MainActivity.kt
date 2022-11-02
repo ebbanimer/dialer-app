@@ -1,27 +1,36 @@
-package se.miun.ebni21000.dt031g.dialer
+package se.miun.ebni2100.dt031g.dialer
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import se.miun.ebni21000.dt031g.dialer.databinding.ActivityMainBinding
+import se.miun.ebni2100.dt031g.dialer.databinding.ActivityMainBinding
 
+/**
+ * Activity class for main..
+ * @author Ebba Nimér
+ */
 class MainActivity : AppCompatActivity() {
 
     // Lazy initialization of binding
     lateinit var binding: ActivityMainBinding
 
+    /**
+     * Upon creation, get binding and initialize click-events.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // get binding of this class
+        // Get binding of this class
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         clickEvents()
     }
 
-    // Click events
+    /**
+     * Add click-events for each button. Opening relevant activity based on choice.
+     */
     private fun clickEvents(){
         binding.dialBtn.setOnClickListener {
             val intent = Intent(this, DialActivity::class.java)
@@ -48,10 +57,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Show the about dialog
+    /**
+     * Create the about-dialog.
+     */
     private fun aboutDialog(){
+
+        // Build dialog.
         val builder = AlertDialog.Builder(this)
-        builder///.setTitle()
+        builder
             .setMessage("This app is supposed to mimic the keypad " +
                 "on a phone. The app will consist of " +
                 "activities to:\n" +
@@ -64,11 +77,9 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("Ok") { dialog, _ -> dialog.cancel()
             }
 
+        // Create alert with created dialog.
         val alert = builder.create()
-        // set title for alert dialog box
         alert.setTitle("About")
-        // show alert dialog
         alert.show()
-
     }
 }
