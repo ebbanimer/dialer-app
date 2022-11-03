@@ -15,14 +15,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/this_is_the_dial_activity"
-        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_dial"
+        app:layout_constraintVertical_bias="0.164" />
 
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialpad_button_1"
+        app:layout_constraintVertical_bias="0.18" />
+
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialpad_button_2"
+        app:layout_constraintVertical_bias="0.322" />
 </androidx.constraintlayout.widget.ConstraintLayout>
