@@ -14,6 +14,19 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Base_ButtonStyle">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:theme">@style/Base_ButtonTheme</item>
+    </style>
+
+    <style name="Base_ButtonTheme">
+        <!-- Color used for the title of the Toolbar - as long as not overridden -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <!-- Used to color back button and three dots -->
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
     <style name="Base_ToolbarStyle">
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="android:background">?colorPrimary</item>
