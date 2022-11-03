@@ -1,4 +1,4 @@
-package se.miun.ebni21000.dt031g.dialer
+package se.miun.ebni2100.dt031g.dialer
 
 import org.junit.Test
 

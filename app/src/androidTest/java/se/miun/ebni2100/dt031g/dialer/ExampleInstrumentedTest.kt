@@ -1,4 +1,4 @@
-package se.miun.ebni21000.dt031g.dialer
+package se.miun.ebni2100.dt031g.dialer
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
