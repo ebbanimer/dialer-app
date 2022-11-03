@@ -21,10 +21,10 @@ class DialpadButton @JvmOverloads constructor(
     }
 
     fun setTitle(title: String){
-        binding.btnTitle.text = title
+        binding.btnTitle.text = title[0].toString()
     }
 
     fun setMessage(message: String){
-        binding.btnMessage.text = message
+        binding.btnMessage.text = message.take(4)
     }
 }
