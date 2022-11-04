@@ -1,8 +1,10 @@
 package se.miun.ebni2100.dt031g.dialer
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -41,12 +43,17 @@ class DialpadButton @JvmOverloads constructor(
         setClickEvents();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setClickEvents(){
         val scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up)
         val scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down)
 
-        binding.root.setOnClickListener {
-            binding.root.startAnimation(scaleUp)
+        binding.root.setOnTouchListener { v, event ->
+            when (event?.action) {
+                MotionEvent.ACTION_DOWN -> startAnimation(scaleDown)
+                MotionEvent.ACTION_UP -> startAnimation(scaleUp)
+            }
+            v?.onTouchEvent(event) ?: true
         }
 
     }
