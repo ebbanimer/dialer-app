@@ -1,6 +1,7 @@
 package se.miun.ebni2100.dt031g.dialer
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -8,23 +9,38 @@ import se.miun.ebni2100.dt031g.dialer.databinding.DialpadlayoutBinding
 
 class DialpadButton @JvmOverloads constructor(
     context: Context,
-    attributeSet: AttributeSet,
+    attrs: AttributeSet,
     defStyle: Int = 0
-) : ConstraintLayout(context, attributeSet, defStyle) {
+) : ConstraintLayout(context, attrs, defStyle) {
 
     private var binding : DialpadlayoutBinding
+
 
     init {
         binding = DialpadlayoutBinding.bind(
             View.inflate(context, R.layout.dialpadlayout,this)
         )
+
+        attrs.let { attributeSet ->
+            val attributes = context.obtainStyledAttributes(attributeSet, R.styleable.DialpadButton, 0, 0)
+            try {
+                val title = attributes.getString(R.styleable.DialpadButton_title).toString()
+                val message = attributes.getString(R.styleable.DialpadButton_message).toString()
+
+                setTitle(title)
+                setMessage(message)
+
+            } finally {
+                attributes.recycle()
+            }
+        }
     }
 
-    fun setTitle(title: String){
+    private fun setTitle(title: String){
         binding.btnTitle.text = title[0].toString()
     }
 
-    fun setMessage(message: String){
+    private fun setMessage(message: String){
         binding.btnMessage.text = message.take(4)
     }
 }

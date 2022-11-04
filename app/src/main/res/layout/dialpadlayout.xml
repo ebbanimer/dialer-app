@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal">
 
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btn_title"
         android:layout_width="match_parent"
@@ -13,14 +14,11 @@
         android:gravity="center"
         android:paddingBottom="10dp"
         style="@style/Base_TextStyle"
-        android:text="Title"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -29,7 +27,6 @@
         android:layout_height="0dp"
         android:gravity="center"
         style="@style/Base_TextStyle"
-        android:text="Message"
         android:textAllCaps="true"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"

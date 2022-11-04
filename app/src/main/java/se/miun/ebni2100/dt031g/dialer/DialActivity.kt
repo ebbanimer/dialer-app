@@ -26,19 +26,7 @@ class DialActivity : AppCompatActivity() {
         setSupportActionBar(binding?.toolbarDial)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        bind()
         clickEvent()
-    }
-
-    private fun bind(){
-        binding?.apply {
-            dialpadButton1?.setTitle("1")
-            dialpadButton1?.setMessage("ABC")
-            dialpadButton2?.setTitle("2")
-            dialpadButton2?.setMessage("DEF")
-            dialpadButton3?.setTitle("3")
-            dialpadButton3?.setMessage("GHI")
-        }
     }
 
     private fun clickEvent(){
