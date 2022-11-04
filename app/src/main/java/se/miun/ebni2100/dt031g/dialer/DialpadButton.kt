@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import se.miun.ebni2100.dt031g.dialer.databinding.DialpadlayoutBinding
 
@@ -14,6 +16,7 @@ class DialpadButton @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyle) {
 
     private var binding : DialpadlayoutBinding
+
 
 
     init {
@@ -34,6 +37,18 @@ class DialpadButton @JvmOverloads constructor(
                 attributes.recycle()
             }
         }
+
+        setClickEvents();
+    }
+
+    private fun setClickEvents(){
+        val scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up)
+        val scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down)
+
+        binding.root.setOnClickListener {
+            binding.root.startAnimation(scaleUp)
+        }
+
     }
 
     private fun setTitle(title: String){

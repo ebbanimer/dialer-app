@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     // Lazy initialization of binding
     lateinit var binding: ActivityMainBinding
 
+
     /**
      * Upon creation, get binding and initialize click-events.
      */

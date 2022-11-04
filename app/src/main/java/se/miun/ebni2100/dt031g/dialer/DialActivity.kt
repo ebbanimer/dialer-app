@@ -26,10 +26,11 @@ class DialActivity : AppCompatActivity() {
         setSupportActionBar(binding?.toolbarDial)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        clickEvent()
+        //clickEvent()
     }
 
     private fun clickEvent(){
+
         binding?.apply {
             dialpadButton1?.setOnClickListener {
                 showEvent(1);
