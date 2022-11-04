@@ -40,4 +40,10 @@
         <item name="android:textColorSecondary">@color/white</item>
     </style>
 
+    <style name="Base_TextStyle">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:textColor">@color/primary_color</item>
+    </style>
+
+
 </resources>

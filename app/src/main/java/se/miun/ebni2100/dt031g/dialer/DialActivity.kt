@@ -1,6 +1,7 @@
 package se.miun.ebni2100.dt031g.dialer
 
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDialBinding
 /**
@@ -26,6 +27,7 @@ class DialActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         bind()
+        clickEvent()
     }
 
     private fun bind(){
@@ -38,4 +40,33 @@ class DialActivity : AppCompatActivity() {
             dialpadButton3?.setMessage("GHI")
         }
     }
+
+    private fun clickEvent(){
+        binding?.apply {
+            dialpadButton1?.setOnClickListener {
+                showEvent(1);
+            }
+            dialpadButton2?.setOnClickListener {
+                showEvent(2);
+            }
+            dialpadButton3?.setOnClickListener {
+                showEvent(3);
+            }
+        }
+    }
+
+    private fun showEvent(number : Int){
+        val builder = AlertDialog.Builder(this)
+        builder
+            .setMessage("You pressed number $number")
+            .setPositiveButton("Ok") { dialog, _ -> dialog.cancel()
+            }
+
+        // Create alert with created dialog.
+        val alert = builder.create()
+        //alert.setTitle("Click")
+        alert.show()
+    }
+
+
 }
