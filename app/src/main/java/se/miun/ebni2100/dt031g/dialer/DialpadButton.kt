@@ -19,15 +19,14 @@ class DialpadButton @JvmOverloads constructor(
 
     private var binding : DialpadlayoutBinding
 
-
-
     init {
         binding = DialpadlayoutBinding.bind(
             View.inflate(context, R.layout.dialpadlayout,this)
         )
 
         attrs.let { attributeSet ->
-            val attributes = context.obtainStyledAttributes(attributeSet, R.styleable.DialpadButton, 0, 0)
+            val attributes = context.obtainStyledAttributes(attributeSet, R.styleable.DialpadButton,
+                0, 0)
             try {
                 val title = attributes.getString(R.styleable.DialpadButton_title).toString()
                 val message = attributes.getString(R.styleable.DialpadButton_message).toString()
