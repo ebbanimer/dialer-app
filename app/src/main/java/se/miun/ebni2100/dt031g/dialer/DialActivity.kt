@@ -26,36 +26,5 @@ class DialActivity : AppCompatActivity() {
         setSupportActionBar(binding?.toolbarDial)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        //clickEvent()
     }
-
-    private fun clickEvent(){
-
-        binding?.apply {
-            dialpadButton1?.setOnClickListener {
-                showEvent(1);
-            }
-            dialpadButton2?.setOnClickListener {
-                showEvent(2);
-            }
-            dialpadButton3?.setOnClickListener {
-                showEvent(3);
-            }
-        }
-    }
-
-    private fun showEvent(number : Int){
-        val builder = AlertDialog.Builder(this)
-        builder
-            .setMessage("You pressed number $number")
-            .setPositiveButton("Ok") { dialog, _ -> dialog.cancel()
-            }
-
-        // Create alert with created dialog.
-        val alert = builder.create()
-        //alert.setTitle("Click")
-        alert.show()
-    }
-
-
 }

@@ -11,6 +11,10 @@ import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import se.miun.ebni2100.dt031g.dialer.databinding.DialpadlayoutBinding
 
+/**
+ * Class for custom view, extending ConstraintLayout
+ * @author Ebba Nimér
+ */
 class DialpadButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet,
@@ -19,11 +23,15 @@ class DialpadButton @JvmOverloads constructor(
 
     private var binding : DialpadlayoutBinding
 
+    /**
+     * Initialize class by retrieving view, getting attributes, and setting animation.
+     */
     init {
         binding = DialpadlayoutBinding.bind(
             View.inflate(context, R.layout.dialpadlayout,this)
         )
 
+        // Retrieve custom attributes
         attrs.let { attributeSet ->
             val attributes = context.obtainStyledAttributes(attributeSet, R.styleable.DialpadButton,
                 0, 0)
@@ -42,6 +50,9 @@ class DialpadButton @JvmOverloads constructor(
         setClickEvents();
     }
 
+    /**
+     * Initialize animation for click-events.
+     */
     @SuppressLint("ClickableViewAccessibility")
     private fun setClickEvents(){
         val scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up)
@@ -57,10 +68,16 @@ class DialpadButton @JvmOverloads constructor(
 
     }
 
+    /**
+     * Set first character in title
+     */
     private fun setTitle(title: String){
         binding.btnTitle.text = title[0].toString()
     }
 
+    /**
+     * Set the 4 first characters in message.
+     */
     private fun setMessage(message: String){
         binding.btnMessage.text = message.take(4)
     }
