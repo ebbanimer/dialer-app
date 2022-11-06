@@ -3,6 +3,7 @@ package se.miun.ebni2100.dt031g.dialer
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityMainBinding
 
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     // Lazy initialization of binding
     lateinit var binding: ActivityMainBinding
+    var hasOpened = false
 
 
     /**
@@ -54,15 +56,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.aboutBtn.setOnClickListener {
-            aboutDialog()
+            if (!hasOpened){
+                aboutDialog()
+            } else {
+                Toast.makeText(this, "You have already seen the About-dialog",
+                Toast.LENGTH_LONG).show()
+            }
+
         }
     }
+
+    //override fun onSaveInstanceState(outState: Bundle) {
+    //    super.onSaveInstanceState(outState)
+    //}
 
     /**
      * Create the about-dialog.
      */
     private fun aboutDialog(){
-
+        hasOpened = true
         // Build dialog.
         val builder = AlertDialog.Builder(this)
         builder
