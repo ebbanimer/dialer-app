@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import se.miun.ebni2100.dt031g.dialer.databinding.DialpadlayoutBinding
 
 /**
- * Class for custom view, extending ConstraintLayout
+ * Class for custom view, extending ConstraintLayout.
  * @author Ebba Nimér
  */
 class DialpadButton @JvmOverloads constructor(
