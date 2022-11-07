@@ -75,13 +75,7 @@ class DialpadButton @JvmOverloads constructor(
                 startAnimation(scaleUp)
                 soundPlayer.playSound(this)
             }
-            /*
-            when (event?.action) {
-                MotionEvent.ACTION_DOWN -> startAnimation(scaleDown) -> true
-                MotionEvent.ACTION_UP -> soundPlayer.playSound(this) //startAnimation(scaleUp)
-            }*/
-            v?.onTouchEvent(event) ?: false
-
+            v?.onTouchEvent(event) ?: true
         }
     }
 
