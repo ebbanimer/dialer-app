@@ -100,8 +100,8 @@ class SoundPlayer private constructor(private val context: Context) {
             "7" -> soundIds[Dials.SEVEN]?.let { soundPool?.play(it, 1f, 1f, 1, 0, 1f) ?: 1 }
             "8" -> soundIds[Dials.EIGHT]?.let { soundPool?.play(it, 1f, 1f, 1, 0, 1f) ?: 1 }
             "9" -> soundIds[Dials.NINE]?.let { soundPool?.play(it, 1f, 1f, 1, 0, 1f) ?: 1 }
-            "pound" -> soundIds[Dials.POUND]?.let { soundPool?.play(it, 1f, 1f, 1, 0, 1f) ?: 1 }
-            "star" -> soundIds[Dials.STAR]?.let { soundPool?.play(it, 1f, 1f, 1, 0, 1f) ?: 1 }
+            "#" -> soundIds[Dials.POUND]?.let { soundPool?.play(it, 1f, 1f, 1, 0, 1f) ?: 1 }
+            "*" -> soundIds[Dials.STAR]?.let { soundPool?.play(it, 1f, 1f, 1, 0, 1f) ?: 1 }
             else -> {
                 return
             }

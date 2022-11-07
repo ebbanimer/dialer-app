@@ -15,7 +15,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+    <se.miun.ebni2100.dt031g.dialer.Dialpad
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!--<se.miun.ebni2100.dt031g.dialer.DialpadButton
         android:id="@+id/dialpad_button_3"
         android:layout_width="50dp"
         android:layout_height="100dp"
@@ -47,5 +51,5 @@
         app:layout_constraintEnd_toEndOf="@+id/dialpad_button_1"
         app:layout_constraintStart_toStartOf="@+id/dialpad_button_1"
         app:layout_constraintTop_toBottomOf="@+id/dialpad_button_1" />
-
+-->
 </androidx.constraintlayout.widget.ConstraintLayout>

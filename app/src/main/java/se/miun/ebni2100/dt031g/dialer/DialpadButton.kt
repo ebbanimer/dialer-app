@@ -52,7 +52,9 @@ class DialpadButton @JvmOverloads constructor(
                 attributes.recycle()
             }
         }
-        setClickEvents();
+
+            //setClickEvents();
+
     }
 
     /**
