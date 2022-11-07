@@ -3,48 +3,201 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="20dp"
-    android:layout_gravity="center_horizontal">
-    
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:rowCount="4"
-        android:columnCount="3"
-        >
+    android:layout_height="match_parent">
 
-        <se.miun.ebni2100.dt031g.dialer.DialpadButton
-            android:id="@+id/dialpad_button_1"
-            android:layout_gravity="fill"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            app:title="1"
-            app:message="" />
+
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/dialpad_button_2"
+        app:layout_constraintBottom_toTopOf="@id/dialpad_button_4"
+        app:title="1"
+        app:message=""/>
+
 
     <se.miun.ebni2100.dt031g.dialer.DialpadButton
         android:id="@+id/dialpad_button_2"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dialpad_button_1"
+        app:layout_constraintEnd_toStartOf="@id/dialpad_button_3"
+        app:layout_constraintBottom_toTopOf="@id/dialpad_button_5"
         app:title="2"
         app:message="ABC"/>
 
+
     <se.miun.ebni2100.dt031g.dialer.DialpadButton
         android:id="@+id/dialpad_button_3"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dialpad_button_2"
+        app:layout_constraintEnd_toStartOf="@id/dialpad_button_star"
+        app:layout_constraintBottom_toTopOf="@id/dialpad_button_6"
         app:title="3"
         app:message="DEF"/>
 
     <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_star"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dialpad_button_3"
+        app:layout_constraintBottom_toTopOf="@id/dialpad_button_0"
+        app:title="*"
+        app:message="" />
+
+   <se.miun.ebni2100.dt031g.dialer.DialpadButton
         android:id="@+id/dialpad_button_4"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/dialpad_button_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/dialpad_button_5"
+        app:layout_constraintBottom_toTopOf="@id/dialpad_button_7"
         app:title="4"
         app:message="GHI"/>
+
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/dialpad_button_2"
+        app:layout_constraintStart_toEndOf="@id/dialpad_button_4"
+        app:layout_constraintEnd_toStartOf="@id/dialpad_button_6"
+        app:layout_constraintBottom_toTopOf="@id/dialpad_button_8"
+        app:message="JKL"
+        app:title="5" />
+
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/dialpad_button_3"
+        app:layout_constraintStart_toEndOf="@id/dialpad_button_5"
+        app:layout_constraintEnd_toStartOf="@id/dialpad_button_0"
+        app:layout_constraintBottom_toTopOf="@id/dialpad_button_9"
+        app:title="6"
+        app:message="MNO" />
+
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_0"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialpad_button_star"
+        app:layout_constraintStart_toEndOf="@id/dialpad_button_6"
+        app:layout_constraintBottom_toTopOf="@id/dialpad_button_pound"
+        app:title="0"
+        app:message="+"/>
+
+
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialpad_button_4"
+        app:layout_constraintEnd_toStartOf="@id/dialpad_button_8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:title="7"
+        app:message="PQRS" />
+
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_8"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toEndOf="@id/dialpad_button_7"
+        app:layout_constraintTop_toBottomOf="@id/dialpad_button_5"
+        app:layout_constraintEnd_toStartOf="@id/dialpad_button_9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:title="8"
+        app:message="TUV" />
+
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_9"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toEndOf="@id/dialpad_button_8"
+        app:layout_constraintTop_toBottomOf="@id/dialpad_button_6"
+        app:layout_constraintEnd_toStartOf="@id/dialpad_button_pound"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:title="9"
+        app:message="WXYZ" />
+
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_pound"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toEndOf="@id/dialpad_button_9"
+        app:layout_constraintTop_toBottomOf="@id/dialpad_button_0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:title="#"
+        app:message="" />
+
+
+
+    <!--
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:title="7"
+        app:message="PQRS" />
+
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:title="8"
+        app:message="TUV" />
+
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:title="9"
+        app:message="WXYZ" />
+
+    <se.miun.ebni2100.dt031g.dialer.DialpadButton
+        android:id="@+id/dialpad_button_pound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:title="#"
+        app:message="" />-->
+
+    <!--
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rowCount="3"
+        android:columnCount="4"
+        >
+
+
+
+
+        <se.miun.ebni2100.dt031g.dialer.DialpadButton
+            android:id="@+id/dialpad_button_star"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:title="*"
+            app:message="" />
+
+        <se.miun.ebni2100.dt031g.dialer.DialpadButton
+            android:id="@+id/dialpad_button_4"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:title="4"
+            app:message="GHI"/>
 
     <se.miun.ebni2100.dt031g.dialer.DialpadButton
         android:id="@+id/dialpad_button_5"
@@ -61,6 +214,14 @@
         android:layout_rowWeight="1"
         app:title="6"
         app:message="MNO" />
+
+        <se.miun.ebni2100.dt031g.dialer.DialpadButton
+            android:id="@+id/dialpad_button_0"
+            android:layout_gravity="fill"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:title="0"
+            app:message="+"/>
 
     <se.miun.ebni2100.dt031g.dialer.DialpadButton
         android:id="@+id/dialpad_button_7"
@@ -87,22 +248,6 @@
         app:message="WXYZ" />
 
     <se.miun.ebni2100.dt031g.dialer.DialpadButton
-        android:id="@+id/dialpad_button_star"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        app:title="*"
-        app:message="" />
-
-    <se.miun.ebni2100.dt031g.dialer.DialpadButton
-        android:id="@+id/dialpad_button_0"
-        android:layout_gravity="fill"
-        android:layout_columnWeight="1"
-        android:layout_rowWeight="1"
-        app:title="0"
-        app:message="+"/>
-
-    <se.miun.ebni2100.dt031g.dialer.DialpadButton
         android:id="@+id/dialpad_button_pound"
         android:layout_gravity="fill"
         android:layout_columnWeight="1"
@@ -111,5 +256,6 @@
         app:message="" />
 
     </GridLayout>
+    -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

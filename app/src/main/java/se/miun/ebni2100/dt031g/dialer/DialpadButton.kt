@@ -35,6 +35,7 @@ class DialpadButton @JvmOverloads constructor(
 
         soundPlayer = SoundPlayer.getInstance(context)
 
+
         // Retrieve custom attributes
         attrs.let { attributeSet ->
             val attributes = context.obtainStyledAttributes(
