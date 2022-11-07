@@ -53,7 +53,7 @@ class DialpadButton @JvmOverloads constructor(
             }
         }
 
-            //setClickEvents();
+        setClickEvents();
 
     }
 
