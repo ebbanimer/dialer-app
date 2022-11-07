@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
@@ -16,12 +16,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/dial_btn"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/dial"
+        style="@style/Base_ButtonStyle"
         android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/call_btn"
@@ -30,11 +31,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/call_btn"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        style="@style/Base_ButtonStyle"
         android:gravity="center"
         android:text="@string/call_list"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -42,29 +44,35 @@
         app:layout_constraintStart_toEndOf="@id/dial_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/settings_btn"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/settings"
+        style="@style/Base_ButtonStyle"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/dial_btn"
         app:layout_constraintStart_toStartOf="@+id/dial_btn"
         app:layout_constraintEnd_toEndOf="@+id/dial_btn" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/map_btn"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/map"
+        style="@style/Base_ButtonStyle"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/call_btn"
         app:layout_constraintStart_toStartOf="@+id/call_btn"
         app:layout_constraintEnd_toEndOf="@+id/call_btn" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/about_btn"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/about"
+        style="@style/Base_ButtonStyle"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/map_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

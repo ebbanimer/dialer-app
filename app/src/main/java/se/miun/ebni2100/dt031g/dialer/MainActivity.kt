@@ -17,12 +17,14 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     var hasOpened = false
 
-
     /**
      * Upon creation, get binding and initialize click-events.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if(savedInstanceState != null)
+            hasOpened = savedInstanceState.getBoolean("savedBoolean")
 
         // Get binding of this class
         binding= ActivityMainBinding.inflate(layoutInflater)
@@ -66,9 +68,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //override fun onSaveInstanceState(outState: Bundle) {
-    //    super.onSaveInstanceState(outState)
-    //}
+    /**
+     * Save boolean
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("savedBoolean", hasOpened)
+    }
+
+    /**
+     * Restore boolean
+     */
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        hasOpened = savedInstanceState.getBoolean("savedBoolean")
+    }
 
     /**
      * Create the about-dialog.
