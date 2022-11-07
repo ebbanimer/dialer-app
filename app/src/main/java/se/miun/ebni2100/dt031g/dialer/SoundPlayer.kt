@@ -7,7 +7,10 @@ import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Build
 
-
+/**
+ * Singleton class representing a sound-pool.
+ * @author Ebba Nimér
+ */
 class SoundPlayer private constructor(private val context: Context) {
 
     private enum class Dials {
@@ -17,11 +20,17 @@ class SoundPlayer private constructor(private val context: Context) {
     private var soundPool: SoundPool? = null
     private lateinit var soundIds: MutableMap<Dials, Int>
 
+    /**
+     * Upon initialization, create sound-pool and add sounds.
+     */
     init {
         createSoundPool()
         createSounds()
     }
 
+    /**
+     * Singleton initialization.
+     */
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var theInstance: SoundPlayer? = null
@@ -34,8 +43,10 @@ class SoundPlayer private constructor(private val context: Context) {
         }
     }
 
+    /**
+     * Create sound-pool.
+     */
     private fun createSoundPool() {
-
         soundPool = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             SoundPool.Builder()
                 .setMaxStreams(3)
@@ -55,6 +66,9 @@ class SoundPlayer private constructor(private val context: Context) {
         }
     }
 
+    /**
+     * Add sounds to hashmap
+     */
     private fun createSounds() {
         soundIds = mutableMapOf()
         soundIds[Dials.ZERO] = soundPool?.load(context, R.raw.zero, 1) ?: 1
@@ -63,10 +77,18 @@ class SoundPlayer private constructor(private val context: Context) {
         soundIds[Dials.THREE] = soundPool?.load(context, R.raw.three, 1) ?: 1
         soundIds[Dials.FOUR] = soundPool?.load(context, R.raw.four, 1) ?: 1
         soundIds[Dials.FIVE] = soundPool?.load(context, R.raw.five, 1) ?: 1
+        soundIds[Dials.SIX] = soundPool?.load(context, R.raw.six, 1) ?: 1
+        soundIds[Dials.SEVEN] = soundPool?.load(context, R.raw.seven, 1) ?: 1
+        soundIds[Dials.EIGHT] = soundPool?.load(context, R.raw.eight, 1) ?: 1
+        soundIds[Dials.NINE] = soundPool?.load(context, R.raw.nine, 1) ?: 1
+        soundIds[Dials.POUND] = soundPool?.load(context, R.raw.pound, 1) ?: 1
+        soundIds[Dials.STAR] = soundPool?.load(context, R.raw.star, 1) ?: 1
     }
 
+    /**
+     * Play corresponding sound to provided dialpad-button.
+     */
     fun playSound(dialpadButton: DialpadButton) {
-        println("tjenixen hej")
         when (dialpadButton.getTitle()) {
             "0" -> soundIds[Dials.ZERO]?.let { soundPool?.play(it, 1f, 1f, 1, 0, 1f) ?: 1 }
             "1" -> soundIds[Dials.ONE]?.let { soundPool?.play(it, 1f, 1f, 1, 0, 1f) ?: 1 }
@@ -84,13 +106,16 @@ class SoundPlayer private constructor(private val context: Context) {
                 return
             }
         }
-
     }
 
+    /**
+     * Destroy singleton class
+     */
     fun destroy() {
-        if (soundPool != null) {
-            soundPool!!.release();
-            soundPool = null;
+        if (soundPool != null){
+            soundPool?.release()
+            soundPool = null
+            theInstance = null
         }
     }
 }

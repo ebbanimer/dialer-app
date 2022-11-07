@@ -52,7 +52,6 @@ class DialpadButton @JvmOverloads constructor(
                 attributes.recycle()
             }
         }
-
         setClickEvents();
     }
 
@@ -61,41 +60,35 @@ class DialpadButton @JvmOverloads constructor(
      */
     @SuppressLint("ClickableViewAccessibility")
     private fun setClickEvents() {
-        println("Setting click events")
         val scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up)
         val scaleDown = AnimationUtils.loadAnimation(context, R.anim.scale_down)
 
-        binding.root.setOnTouchListener { v, event ->
-
-            if (event?.action == MotionEvent.ACTION_DOWN){
-                startAnimation(scaleDown)
-                return@setOnTouchListener true
-            }
-            if (event?.action == MotionEvent.ACTION_UP){
-                startAnimation(scaleUp)
-                soundPlayer.playSound(this)
-            }
-            v?.onTouchEvent(event) ?: true
+        binding.root.setOnClickListener {
+            startAnimation(scaleUp)
+            startAnimation(scaleDown)
+            soundPlayer.playSound(this)
         }
     }
 
 
-        /**
-         * Set first character in title
-         */
-        private fun setTitle(newTitle: String) {
-            binding.btnTitle.text = newTitle[0].toString()
-        }
+    /**
+     * Set first character in title.
+     */
+    private fun setTitle(newTitle: String) {
+        binding.btnTitle.text = newTitle[0].toString()
+    }
 
-        fun getTitle(): String {
-            return title
-        }
+    /**
+     * Return title to calling client.
+     */
+    fun getTitle(): String {
+        return title
+    }
 
-        /**
-         * Set the 4 first characters in message.
-         */
-        private fun setMessage(message: String) {
-            binding.btnMessage.text = message.take(4)
-        }
-
+    /**
+     * Set the 4 first characters in message.
+     */
+    private fun setMessage(message: String) {
+        binding.btnMessage.text = message.take(4)
+    }
 }

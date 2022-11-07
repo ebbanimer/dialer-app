@@ -1,8 +1,6 @@
 package se.miun.ebni2100.dt031g.dialer
 
-import android.media.SoundPool
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDialBinding
 /**
@@ -12,7 +10,6 @@ import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDialBinding
 class DialActivity : AppCompatActivity() {
 
     var binding: ActivityDialBinding? = null
-    private var soundPlayer: SoundPlayer? = null
 
     /**
      * Upon creation, initialize view-binding and layout.
@@ -27,6 +24,10 @@ class DialActivity : AppCompatActivity() {
         // Add toolbar.
         setSupportActionBar(binding?.toolbarDial)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        SoundPlayer.getInstance(this).destroy()
     }
 }
