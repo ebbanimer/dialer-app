@@ -1,9 +1,9 @@
-package se.miun.ebni2100.dt031g.dialer
+package se.miun.ebni2100.dt031g.dialer.support
 
 import android.content.Context
 import android.util.Log
+import se.miun.ebni2100.dt031g.dialer.R
 import java.io.*
-import java.security.AccessController.getContext
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 
@@ -77,8 +77,7 @@ internal object Util {
         if (voiceName == null || voiceName.length < 1) {
             voiceName = MAMACITA_DIR
         }
-        return File(getInternalStorageDir(context), VOICE_DIR + File.separator + MAMACITA_DIR
-                + File.separator + voiceName)
+        return File(getInternalStorageDir(context), VOICE_DIR + File.separator + voiceName)
     }
 
     /**

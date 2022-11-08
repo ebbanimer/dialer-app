@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
 
-    <se.miun.ebni2100.dt031g.dialer.Dialpad
+    <se.miun.ebni2100.dt031g.dialer.customviews.Dialpad
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

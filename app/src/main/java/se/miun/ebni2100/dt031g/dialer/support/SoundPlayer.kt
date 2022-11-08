@@ -1,12 +1,13 @@
-package se.miun.ebni2100.dt031g.dialer
+package se.miun.ebni2100.dt031g.dialer.support
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.AssetManager
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Build
+import se.miun.ebni2100.dt031g.dialer.customviews.DialpadButton
+import java.io.File
 
 
 /**
@@ -76,18 +77,27 @@ class SoundPlayer private constructor(private val context: Context) {
     private fun createSounds() {
         soundIds = mutableMapOf()
 
-        val songFile0 = Util.getDirForVoice(context, "zero.mp3")
-        val songFile1 = Util.getDirForVoice(context, "one.mp3")
-        val songFile2 = Util.getDirForVoice(context, "two.mp3")
-        val songFile3 = Util.getDirForVoice(context, "three.mp3")
-        val songFile4 = Util.getDirForVoice(context, "four.mp3")
-        val songFile5 = Util.getDirForVoice(context, "five.mp3")
-        val songFile6 = Util.getDirForVoice(context, "six.mp3")
-        val songFile7 = Util.getDirForVoice(context, "seven.mp3")
-        val songFile8 = Util.getDirForVoice(context, "eight.mp3")
-        val songFile9 = Util.getDirForVoice(context, "nine.mp3")
-        val songFilePound = Util.getDirForVoice(context, "pound.mp3")
-        val songFileStar = Util.getDirForVoice(context, "star.mp3")
+        val songFile0 =
+            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "zero.mp3")
+        val songFile1 = Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "one.mp3")
+        val songFile2 = Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "two.mp3")
+        val songFile3 =
+            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "three.mp3")
+        val songFile4 =
+            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "four.mp3")
+        val songFile5 =
+            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "five.mp3")
+        val songFile6 = Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "six.mp3")
+        val songFile7 =
+            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "seven.mp3")
+        val songFile8 =
+            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "eight.mp3")
+        val songFile9 =
+            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "nine.mp3")
+        val songFilePound =
+            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "pound.mp3")
+        val songFileStar =
+            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "star.mp3")
 
         soundIds[Dials.ZERO] = soundPool?.load(songFile0.absolutePath, 1) ?: 1
         soundIds[Dials.ONE] = soundPool?.load(songFile1.absolutePath, 1) ?: 1
@@ -102,21 +112,6 @@ class SoundPlayer private constructor(private val context: Context) {
         soundIds[Dials.POUND] = soundPool?.load(songFilePound.absolutePath, 1) ?: 1
         soundIds[Dials.STAR] = soundPool?.load(songFileStar.absolutePath, 1) ?: 1
 
-        //soundIds[Dials.ZERO] = soundPool?.load(context, songFile, 1) ?: 1
-
-        /*
-        soundIds[Dials.ZERO] = soundPool?.load(context, R.raw.zero, 1) ?: 1
-        soundIds[Dials.ONE] = soundPool?.load(context, R.raw.one, 1) ?: 1
-        soundIds[Dials.TWO] = soundPool?.load(context, R.raw.two, 1) ?: 1
-        soundIds[Dials.THREE] = soundPool?.load(context, R.raw.three, 1) ?: 1
-        soundIds[Dials.FOUR] = soundPool?.load(context, R.raw.four, 1) ?: 1
-        soundIds[Dials.FIVE] = soundPool?.load(context, R.raw.five, 1) ?: 1
-        soundIds[Dials.SIX] = soundPool?.load(context, R.raw.six, 1) ?: 1
-        soundIds[Dials.SEVEN] = soundPool?.load(context, R.raw.seven, 1) ?: 1
-        soundIds[Dials.EIGHT] = soundPool?.load(context, R.raw.eight, 1) ?: 1
-        soundIds[Dials.NINE] = soundPool?.load(context, R.raw.nine, 1) ?: 1
-        soundIds[Dials.POUND] = soundPool?.load(context, R.raw.pound, 1) ?: 1
-        soundIds[Dials.STAR] = soundPool?.load(context, R.raw.star, 1) ?: 1*/
     }
 
     /**

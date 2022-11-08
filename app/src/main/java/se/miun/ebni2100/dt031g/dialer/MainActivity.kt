@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityMainBinding
+import se.miun.ebni2100.dt031g.dialer.support.Util
 
 /**
  * Activity class for main..
