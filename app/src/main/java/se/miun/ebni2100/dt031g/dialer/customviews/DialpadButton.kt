@@ -59,10 +59,16 @@ class DialpadButton @JvmOverloads constructor(
 
     }
 
+    /**
+     * Provide click-listener to clients.
+     */
     interface OnClickListener{
         fun onClick(button: DialpadButton)
     }
 
+    /**
+     * Set listener.
+     */
     fun setListener(listener: OnClickListener){
         this.listener = listener
     }
@@ -103,9 +109,5 @@ class DialpadButton @JvmOverloads constructor(
      */
     private fun setMessage(message: String) {
         binding.btnMessage.text = message.take(4)
-    }
-
-    private fun setDialInput(s : String){
-
     }
 }

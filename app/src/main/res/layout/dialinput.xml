@@ -12,7 +12,7 @@
         android:freezesText="true"
         android:text=""
         android:textAlignment="center"
-        app:autoSizeTextType="uniform"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline1"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,21 +22,23 @@
         android:id="@+id/imgDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_baseline_phone_24"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/delete_01_generated__1_"
         app:layout_constraintStart_toEndOf="@id/guideline1"
         app:layout_constraintBottom_toTopOf="@id/imgPhone"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/imgPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_baseline_phone_24"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/guideline1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgDelete"
-        app:srcCompat="@drawable/delete_01_generated__1_" />
+        app:layout_constraintTop_toBottomOf="@id/imgDelete"/>
 
 
     <androidx.constraintlayout.widget.Guideline

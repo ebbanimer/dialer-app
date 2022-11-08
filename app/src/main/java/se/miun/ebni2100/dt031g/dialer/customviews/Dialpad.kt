@@ -7,6 +7,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import se.miun.ebni2100.dt031g.dialer.R
 import se.miun.ebni2100.dt031g.dialer.databinding.DialpadBinding
 
+/**
+ * Custom-view representing the dialpad with all buttons.
+ * @author Ebba Nimér
+ */
 class Dialpad @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet,
@@ -15,19 +19,27 @@ class Dialpad @JvmOverloads constructor(
 
     private var binding : DialpadBinding
 
+    /**
+     * Initialize binding.
+     */
     init {
         binding = DialpadBinding.bind(
             View.inflate(context, R.layout.dialpad, this)
         )
     }
 
+    /**
+     * For each button, attach listener.
+     */
     fun setListener(listener: DialpadButton.OnClickListener){
         listPads().forEach {
             it.setListener(listener)
         }
     }
 
-
+    /**
+     * Add buttons to list of buttons.
+     */
     private fun listPads() = mutableListOf<DialpadButton>().apply{
         add(binding.dialpadButton0)
         add(binding.dialpadButton1)
