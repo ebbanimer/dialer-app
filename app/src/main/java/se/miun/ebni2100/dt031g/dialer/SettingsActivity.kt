@@ -1,8 +1,13 @@
 package se.miun.ebni2100.dt031g.dialer
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import se.miun.ebni2100.dt031g.dialer.databinding.SettingsActivityBinding
 
 /**
@@ -35,9 +40,35 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    companion object {
+        const val NUMBER_SET_KEY = "NumberSetKey"
+
+        fun shouldStoreNumbers(context: Context): Boolean {
+            val sharedPreferences: SharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context)
+            return sharedPreferences.getBoolean(context.getString(R.string.store_key), true)
+        }
+
+    }
+
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+        }
+
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+            findPreference<Preference>(getString(R.string.delete_key))?.setOnPreferenceClickListener {
+                clearStoredNumbers()
+                true
+            }
+        }
+
+        private fun clearStoredNumbers(){
+            val toSave : MutableSet<String>? = null
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            val editor = prefs.edit()
+            editor.putStringSet(NUMBER_SET_KEY, toSave).apply()
         }
     }
 }

@@ -1,12 +1,17 @@
 package se.miun.ebni2100.dt031g.dialer.customviews
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.preference.PreferenceManager
 import se.miun.ebni2100.dt031g.dialer.R
+import se.miun.ebni2100.dt031g.dialer.SettingsActivity
+import se.miun.ebni2100.dt031g.dialer.SettingsActivity.Companion.shouldStoreNumbers
 import se.miun.ebni2100.dt031g.dialer.databinding.DialinputBinding
 
 
@@ -54,10 +59,26 @@ class DialInput @JvmOverloads constructor(
 
         // Create new dial intent.
         binding.imgPhone.setOnClickListener {
+            if (shouldStoreNumbers(context)){
+                saveNumber(binding.dialText.text.toString())
+            }
             val intent = Intent(Intent.ACTION_DIAL)
             intent.data = Uri.parse("tel:" + binding.dialText.text)
             context.startActivity(intent)
-
         }
+    }
+
+    /**
+     *
+     */
+    private fun saveNumber(s: String){
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val numberSet = prefs.getStringSet(SettingsActivity.NUMBER_SET_KEY, null)
+        val toSave : MutableSet<String> = mutableSetOf<String>().apply {
+            addAll(numberSet ?: emptySet())
+            add(s)
+        }
+        val editor = prefs.edit()
+        editor.putStringSet(SettingsActivity.NUMBER_SET_KEY, toSave).apply()
     }
 }

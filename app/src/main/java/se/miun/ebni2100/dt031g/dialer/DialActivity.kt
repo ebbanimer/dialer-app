@@ -1,6 +1,9 @@
 package se.miun.ebni2100.dt031g.dialer
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import se.miun.ebni2100.dt031g.dialer.customviews.DialpadButton
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDialBinding
@@ -27,6 +30,7 @@ class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
         // Add toolbar.
         setSupportActionBar(binding?.toolbarDial)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding
 
         setDialPadsListener()
     }
@@ -42,5 +46,20 @@ class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
 
     override fun onClick(button: DialpadButton) {
         binding?.dialInput?.addNum(button)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.dial_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.setting_option -> {
+                startActivity(Intent(this,SettingsActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
