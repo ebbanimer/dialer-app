@@ -1,10 +1,10 @@
 package se.miun.ebni2100.dt031g.dialer
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityMainBinding
 
 /**
@@ -31,6 +31,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         clickEvents()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Util.getInternalStorageDir(this)
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (!Util.defaultVoiceExist(this)){
+            Util.copyDefaultVoiceToInternalStorage(this)
+        }
     }
 
     /**

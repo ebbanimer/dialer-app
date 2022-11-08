@@ -70,6 +70,7 @@ class DialpadButton @JvmOverloads constructor(
             startAnimation(scaleUp)
             startAnimation(scaleDown)
             soundPlayer.playSound(this)
+
         }
     }
 
