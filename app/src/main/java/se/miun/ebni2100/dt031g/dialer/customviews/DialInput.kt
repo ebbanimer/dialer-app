@@ -1,9 +1,7 @@
 package se.miun.ebni2100.dt031g.dialer.customviews
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.util.AttributeSet
 import android.view.View
@@ -69,11 +67,12 @@ class DialInput @JvmOverloads constructor(
     }
 
     /**
-     *
+     * Save number in default shared preferences, using set of strings.
      */
     private fun saveNumber(s: String){
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val numberSet = prefs.getStringSet(SettingsActivity.NUMBER_SET_KEY, null)
+        // Add old + new sets to toSave.
         val toSave : MutableSet<String> = mutableSetOf<String>().apply {
             addAll(numberSet ?: emptySet())
             add(s)

@@ -3,6 +3,7 @@ package se.miun.ebni2100.dt031g.dialer
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
@@ -40,9 +41,25 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    /**
+     * Define static methods to be accessed by other classes.
+     */
     companion object {
         const val NUMBER_SET_KEY = "NumberSetKey"
 
+        /**
+         * Verify which preference in settings is set.
+         */
         fun shouldStoreNumbers(context: Context): Boolean {
             val sharedPreferences: SharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context)
