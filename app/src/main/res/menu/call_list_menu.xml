@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/setting_option"
-        android:icon="@drawable/ic_baseline_delete_forever_24"
+        android:icon="@drawable/ic_trash_can_white"
         android:orderInCategory="100"
         app:showAsAction="always"
         android:title="Setting" />

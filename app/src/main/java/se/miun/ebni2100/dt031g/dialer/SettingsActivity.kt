@@ -41,6 +41,11 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    /**
+     * Click listener to send to the previous screen when back button arrow pressed,
+     * without this logic the user would be sent to MainActivity.class even if the user
+     * would come from CallListActivity or DialActivity
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             android.R.id.home -> {
@@ -69,10 +74,17 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
+
+        /**
+         * Inflates root_preferences.xml file as layout
+         */
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
         }
 
+        /**
+         * Binds clear stored number option and triggers logic to remove stored numbers
+         */
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
             findPreference<Preference>(getString(R.string.delete_key))?.setOnPreferenceClickListener {
@@ -81,6 +93,9 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
+        /**
+         * Saves a null Set<String> object, therefore all previous numbers stored are removed
+         */
         private fun clearStoredNumbers(){
             val toSave : MutableSet<String>? = null
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)

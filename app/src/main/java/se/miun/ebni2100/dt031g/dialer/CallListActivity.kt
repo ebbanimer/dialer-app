@@ -31,14 +31,20 @@ class CallListActivity : AppCompatActivity() {
         setSupportActionBar(binding?.toolbarList)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        updateList()
+        displayStoredNumbers()
     }
 
+    /**
+     * Display menu option item created in call_list_menu.xml file
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.call_list_menu, menu)
         return true
     }
 
+    /**
+     * Click listener to send user to SettingsActivity when menu option selected
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.setting_option -> {
@@ -49,7 +55,11 @@ class CallListActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateList(){
+    /**
+     * Display all stored numbers in shared pref, if theres no numbe stored it does not print anything and we
+     * display message to the user "No telephone numbers are stored" instead
+     */
+    private fun displayStoredNumbers(){
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         numberSet = prefs.getStringSet(SettingsActivity.NUMBER_SET_KEY, null) ?: mutableSetOf()
         if (numberSet.isEmpty()) return

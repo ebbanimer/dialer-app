@@ -40,19 +40,33 @@ class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
         SoundPlayer.getInstance(this).destroy()
     }
 
+    /**
+     * Sets listener to dialpad view, without this listener, whenever the user taps on a button
+     * it would not update the dial input custom view
+     */
     private fun setDialPadsListener(){
         binding?.dialpad?.setListener(this)
     }
 
+    /**
+     * Triggered every time the user clicks on a dial button and sends the object to be processed
+     * within input dial custom view
+     */
     override fun onClick(button: DialpadButton) {
         binding?.dialInput?.addNum(button)
     }
 
+    /**
+     * Display menu option item created in dial_menu.xml file
+     */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.dial_menu, menu)
         return true
     }
 
+    /**
+     * Click listener to send user to SettingsActivity when menu option selected
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.setting_option -> {
