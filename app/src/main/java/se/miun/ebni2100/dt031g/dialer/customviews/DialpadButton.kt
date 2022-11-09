@@ -1,14 +1,13 @@
-package se.miun.ebni2100.dt031g.dialer
+package se.miun.ebni2100.dt031g.dialer.customviews
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.view.MotionEvent
 import android.view.View
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
+import se.miun.ebni2100.dt031g.dialer.R
+import se.miun.ebni2100.dt031g.dialer.support.SoundPlayer
 import se.miun.ebni2100.dt031g.dialer.databinding.DialpadlayoutBinding
 
 /**
@@ -24,6 +23,8 @@ class DialpadButton @JvmOverloads constructor(
     private var binding: DialpadlayoutBinding
     private var soundPlayer: SoundPlayer
     private val title: String
+
+    private lateinit var listener : OnClickListener
 
     /**
      * Initialize class by retrieving view, getting attributes, and setting animation.
@@ -59,6 +60,20 @@ class DialpadButton @JvmOverloads constructor(
     }
 
     /**
+     * Provide click-listener to clients.
+     */
+    interface OnClickListener{
+        fun onClick(button: DialpadButton)
+    }
+
+    /**
+     * Set listener.
+     */
+    fun setListener(listener: OnClickListener){
+        this.listener = listener
+    }
+
+    /**
      * Initialize animation for click-events.
      */
     @SuppressLint("ClickableViewAccessibility")
@@ -69,6 +84,7 @@ class DialpadButton @JvmOverloads constructor(
         binding.root.setOnClickListener {
             startAnimation(scaleUp)
             startAnimation(scaleDown)
+            listener.onClick(this@DialpadButton)
             soundPlayer.playSound(this)
         }
     }

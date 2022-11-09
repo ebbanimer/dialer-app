@@ -28,7 +28,7 @@
     </style>
 
     <style name="Base_ToolbarStyle">
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="android:background">?colorPrimary</item>
         <item name="android:theme">@style/Base_ToolbarTheme</item>
     </style>

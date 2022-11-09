@@ -12,14 +12,28 @@
         android:layout_height="55dp"
         style="@style/Base_ToolbarStyle"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/dial_input"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <se.miun.ebni2100.dt031g.dialer.Dialpad
+    <se.miun.ebni2100.dt031g.dialer.customviews.DialInput
+        android:id="@+id/dial_input"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        style="@style/Base_ToolbarStyle"
+        app:layout_constraintBottom_toTopOf="@id/dialpad"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_dial"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <se.miun.ebni2100.dt031g.dialer.customviews.Dialpad
+        android:id="@+id/dialpad"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_dial"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dial_input"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
