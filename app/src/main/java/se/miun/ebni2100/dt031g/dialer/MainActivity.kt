@@ -104,21 +104,13 @@ class MainActivity : AppCompatActivity() {
         // Build dialog.
         val builder = AlertDialog.Builder(this)
         builder
-            .setMessage("This app is supposed to mimic the keypad " +
-                "on a phone. The app will consist of " +
-                "activities to:\n" +
-                "\n" +
-                "- Enter numbers to dial\n" +
-                "- See previously dialed numbers\n" +
-                "- Change the keypad settings\n" +
-                "- Show on a Map where previous calls are " +
-                "dialed from \n")
-            .setPositiveButton("Ok") { dialog, _ -> dialog.cancel()
+            .setMessage(R.string.about_dialog)
+            .setPositiveButton(R.string.ok_dialog) { dialog, _ -> dialog.cancel()
             }
 
         // Create alert with created dialog.
         val alert = builder.create()
-        alert.setTitle("About")
+        alert.setTitle(R.string.about_title)
         alert.show()
     }
 }

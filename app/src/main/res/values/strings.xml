@@ -24,4 +24,16 @@
     <string name="delete_numbers_summary">"Delete stored numbers from storage."</string>
 
     <string name="title_activity_maps">MapsActivity</string>
+
+    <!-- About dialog -->
+    <string name="about_title">About</string>
+    <string name="about_dialog">This app is supposed to mimic the keypad
+                on a phone. The app will consist of activities to:\n
+                \n
+                - Enter numbers to dial \n
+                - See previously dialed numbers \n
+                - Change the keypad settings \n
+                - Show on a Map where previous calls are dialed from</string>
+    <string name="ok_dialog">OK</string>
+
 </resources>
