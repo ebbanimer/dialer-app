@@ -54,6 +54,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.downloadBtn.setOnClickListener {
+            val intent = Intent(this, DownloadActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.callBtn.setOnClickListener {
             val intent = Intent(this, CallListActivity::class.java)
             startActivity(intent)

@@ -93,6 +93,10 @@ class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
                 startActivity(Intent(this,SettingsActivity::class.java))
                 true
             }
+            R.id.download_option -> {
+                startActivity(Intent(this, DownloadActivity::class.java))
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
