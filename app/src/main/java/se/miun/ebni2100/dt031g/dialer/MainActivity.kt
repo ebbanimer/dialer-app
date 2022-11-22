@@ -42,9 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (!Util.defaultVoiceExist(this)){
-            Util.copyDefaultVoiceToInternalStorage(this)
-        }
+        Util.copyDefaultVoiceToInternalStorage(this)
     }
 
     /**

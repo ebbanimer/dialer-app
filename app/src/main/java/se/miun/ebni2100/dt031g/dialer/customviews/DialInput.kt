@@ -1,11 +1,16 @@
 package se.miun.ebni2100.dt031g.dialer.customviews
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.AttributeSet
 import android.view.View
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import se.miun.ebni2100.dt031g.dialer.R
 import se.miun.ebni2100.dt031g.dialer.SettingsActivity
@@ -24,6 +29,10 @@ class DialInput @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyle){
 
     var binding : DialinputBinding
+
+    companion object {
+        const val REQUEST_CALL = 1
+    }
 
     /**
      * Initialize binding.
@@ -60,11 +69,49 @@ class DialInput @JvmOverloads constructor(
             if (shouldStoreNumbers(context)){
                 saveNumber(binding.dialText.text.toString())
             }
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:" + binding.dialText.text)
-            context.startActivity(intent)
+            makePhoneCall()
+            //val intent = Intent(Intent.ACTION_DIAL)
+            //intent.data = Uri.parse("tel:" + binding.dialText.text)
+            //context.startActivity(intent)
         }
     }
+
+    priv
+
+    private fun makePhoneCall(){
+        val phoneToCall = binding.dialText.text
+        val intent : Intent
+
+        if (!phoneToCall.isNullOrEmpty()){
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) ==
+                PackageManager.PERMISSION_GRANTED ) {
+                intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneToCall"))
+                context.startActivity(intent)
+            } else {
+                intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneToCall"))
+                context.startActivity(intent)
+            }
+        } else {
+            Toast.makeText(context, "Enter phone number", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                makePhoneCall()
+            } else {
+                Toast.makeText(context, "Permission DENIED", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
+
+
 
     /**
      * Save number in default shared preferences, using set of strings.
