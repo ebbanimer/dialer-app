@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import se.miun.ebni2100.dt031g.dialer.customviews.DialpadButton
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDialBinding
@@ -33,7 +35,24 @@ class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
         binding
 
         setDialPadsListener()
+
+        // ???? Haj
+        requestPermissionLauncher
     }
+
+    /**
+     * THIS I DID IN SUBTASK 1
+     */
+    val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                binding?.dialInput?.makePhoneCall()
+            } else {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show()
+            }
+        }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -47,6 +66,7 @@ class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
     private fun setDialPadsListener(){
         binding?.dialpad?.setListener(this)
     }
+
 
     /**
      * Triggered every time the user clicks on a dial button and sends the object to be processed

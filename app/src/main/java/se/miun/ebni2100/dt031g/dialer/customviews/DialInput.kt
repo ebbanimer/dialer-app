@@ -1,6 +1,7 @@
 package se.miun.ebni2100.dt031g.dialer.customviews
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,6 +11,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import se.miun.ebni2100.dt031g.dialer.R
@@ -76,18 +79,21 @@ class DialInput @JvmOverloads constructor(
         }
     }
 
-    priv
-
-    private fun makePhoneCall(){
+    /**
+     * THIS I DID IN SUBTASK 1
+     */
+    fun makePhoneCall(){
         val phoneToCall = binding.dialText.text
         val intent : Intent
 
         if (!phoneToCall.isNullOrEmpty()){
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) ==
                 PackageManager.PERMISSION_GRANTED ) {
+                println("access granted")
                 intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneToCall"))
                 context.startActivity(intent)
             } else {
+                println("access not granted")
                 intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneToCall"))
                 context.startActivity(intent)
             }
@@ -95,23 +101,6 @@ class DialInput @JvmOverloads constructor(
             Toast.makeText(context, "Enter phone number", Toast.LENGTH_SHORT).show()
         }
     }
-
-
-    val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                makePhoneCall()
-            } else {
-                Toast.makeText(context, "Permission DENIED", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-
-
-
-
 
     /**
      * Save number in default shared preferences, using set of strings.
