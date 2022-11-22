@@ -35,5 +35,6 @@
                 - Change the keypad settings \n
                 - Show on a Map where previous calls are dialed from</string>
     <string name="ok_dialog">OK</string>
+    <string name="already_seen">You have already seen the About-dialog</string>
 
 </resources>
