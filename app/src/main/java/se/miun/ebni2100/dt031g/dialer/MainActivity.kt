@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             if (!hasOpened){
                 aboutDialog()
             } else {
-                Toast.makeText(this, "You have already seen the About-dialog",
+                Toast.makeText(this, R.string.already_seen,
                 Toast.LENGTH_LONG).show()
             }
 
