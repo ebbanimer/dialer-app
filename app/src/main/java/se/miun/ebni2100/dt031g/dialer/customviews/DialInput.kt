@@ -33,9 +33,6 @@ class DialInput @JvmOverloads constructor(
 
     var binding : DialinputBinding
 
-    companion object {
-        const val REQUEST_CALL = 1
-    }
 
     /**
      * Initialize binding.
@@ -45,7 +42,7 @@ class DialInput @JvmOverloads constructor(
             View.inflate(context, R.layout.dialinput, this)
         )
 
-        clickEvents();
+        deleteButtonClickListener()
     }
 
     /**
@@ -56,9 +53,9 @@ class DialInput @JvmOverloads constructor(
     }
 
     /**
-     * Add click-events for buttons.
+     * Add click-events for delete button.
      */
-    private fun clickEvents(){
+    private fun deleteButtonClickListener(){
 
         // Get current string, pop last character, and update view.
         binding.imgDelete.setOnClickListener {
@@ -67,36 +64,18 @@ class DialInput @JvmOverloads constructor(
             binding.dialText.text = newS
         }
 
-        // Create new dial intent.
-        binding.imgPhone.setOnClickListener {
-            if (shouldStoreNumbers(context)){
-                saveNumber(binding.dialText.text.toString())
-            }
-            makePhoneCall()
-            //val intent = Intent(Intent.ACTION_DIAL)
-            //intent.data = Uri.parse("tel:" + binding.dialText.text)
-            //context.startActivity(intent)
-        }
     }
+
 
     /**
      * THIS I DID IN SUBTASK 1
      */
     fun makePhoneCall(){
         val phoneToCall = binding.dialText.text
-        val intent : Intent
 
         if (!phoneToCall.isNullOrEmpty()){
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) ==
-                PackageManager.PERMISSION_GRANTED ) {
-                println("access granted")
-                intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneToCall"))
-                context.startActivity(intent)
-            } else {
-                println("access not granted")
-                intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneToCall"))
-                context.startActivity(intent)
-            }
+            println("access granted")
+            Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneToCall")).also { context.startActivity(it) }
         } else {
             Toast.makeText(context, "Enter phone number", Toast.LENGTH_SHORT).show()
         }
@@ -115,5 +94,17 @@ class DialInput @JvmOverloads constructor(
         }
         val editor = prefs.edit()
         editor.putStringSet(SettingsActivity.NUMBER_SET_KEY, toSave).apply()
+    }
+
+    /**
+     * When icon is clicked, store number if desired, and invoke listener.
+     */
+    fun onMakeCallListener(listener:() -> Unit){
+        binding.imgPhone.setOnClickListener {
+            if (shouldStoreNumbers(context)){
+                saveNumber(binding.dialText.text.toString())
+            }
+            listener.invoke()
+        }
     }
 }

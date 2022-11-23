@@ -40,4 +40,9 @@
     <string name="setting">Setting</string>
     <string name="download_voices_small">Download Voices</string>
 
+    <!-- Phone call dialog -->
+    <string name="call_title">Call Permission</string>
+    <string name="call_description">This permission is required in order to make phone calls</string>
+    <string name="cancel_dialog">Cancel</string>
+
 </resources>

@@ -1,12 +1,18 @@
 package se.miun.ebni2100.dt031g.dialer
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import se.miun.ebni2100.dt031g.dialer.customviews.DialpadButton
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDialBinding
 import se.miun.ebni2100.dt031g.dialer.support.SoundPlayer
@@ -18,6 +24,10 @@ import se.miun.ebni2100.dt031g.dialer.support.SoundPlayer
 class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
 
     var binding: ActivityDialBinding? = null
+
+    companion object{
+        const val CALL_PERMISSION_REQ_CODE = 10
+    }
 
     /**
      * Upon creation, initialize view-binding and layout.
@@ -35,24 +45,36 @@ class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
         binding
 
         setDialPadsListener()
+        setOnMakeCallListener()
 
-        // ???? Haj
-        requestPermissionLauncher
     }
 
-    /**
-     * THIS I DID IN SUBTASK 1
-     */
-    val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                binding?.dialInput?.makePhoneCall()
-            } else {
-                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show()
-            }
+    private fun displayRationale(){
+        val builder = AlertDialog.Builder(this)
+            .setTitle(R.string.call_title)
+            .setMessage(R.string.call_description)
+            .setPositiveButton(R.string.ok_dialog) { _, _ ->  sendUserToSettings() }
+            .setNegativeButton(R.string.cancel_dialog) { dialog, _ -> dialog.dismiss() }
+
+        // Create alert with created dialog.
+        val alert = builder.create()
+        alert.show()
+    }
+
+    private fun sendUserToSettings(){
+        Intent().apply {
+            action = ACTION_APPLICATION_DETAILS_SETTINGS
+            data = Uri.fromParts("package", packageName, null)
+        }.also { startActivity(it) }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult( ActivityResultContracts.RequestPermission() ) { isGranted: Boolean ->
+        if (isGranted) {
+            binding?.dialInput?.makePhoneCall()
+        } else {
+            displayRationale()
         }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -98,6 +120,34 @@ class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    /**
+     * Verify if the user has permission to make phone call.
+     */
+    private fun hasCallPhonePermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this,
+            Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED
+    }
+
+    /**
+     * Request permission to call phone.
+     */
+    private fun requestCallPhonePermission(){
+        requestPermissionLauncher.launch(Manifest.permission.CALL_PHONE)
+    }
+
+    /**
+     * Click-listener for making a phone-call.
+     */
+    private fun setOnMakeCallListener(){
+        binding?.dialInput?.onMakeCallListener {
+            if (hasCallPhonePermission()){
+                binding?.dialInput?.makePhoneCall()
+            }else{
+                requestCallPhonePermission()
+            }
         }
     }
 }
