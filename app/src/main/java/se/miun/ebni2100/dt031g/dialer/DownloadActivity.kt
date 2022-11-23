@@ -10,6 +10,10 @@ import androidx.annotation.RequiresApi
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDialBinding
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDownloadBinding
 
+/**
+ * Activity for downloading songs.
+ * @author Ebba Nimér
+ */
 class DownloadActivity : AppCompatActivity() {
 
     var binding : ActivityDownloadBinding? = null
@@ -24,6 +28,7 @@ class DownloadActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
 
+        // Initiate WebView and load URL.
         binding?.webView?.webViewClient  = WebViewClient()
         binding?.webView?.loadUrl("https://dt031g.programvaruteknik.nu/dialer/voices/")
 
