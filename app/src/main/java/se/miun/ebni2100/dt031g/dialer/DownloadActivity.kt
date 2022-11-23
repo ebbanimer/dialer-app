@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
-import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDialBinding
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDownloadBinding
 
 /**
@@ -27,13 +26,23 @@ class DownloadActivity : AppCompatActivity() {
         binding = ActivityDownloadBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        setSupportActionBar(binding!!.toolBarDownload)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
+
+        val webView = binding!!.webView
+
+        webView.webViewClient = WebViewClient()
+        webView.loadUrl("https://dt031g.programvaruteknik.nu/dialer/voices/")
+        webView.settings.javaScriptEnabled = true
 
         // Initiate WebView and load URL.
-        binding?.webView?.webViewClient  = WebViewClient()
-        binding?.webView?.loadUrl("https://dt031g.programvaruteknik.nu/dialer/voices/")
+        //binding?.webView?.webViewClient  = WebViewClient()
+        //binding?.webView?.loadUrl("https://dt031g.programvaruteknik.nu/dialer/voices/")
 
         // enable the javascript settings
-        binding?.webView?.settings?.javaScriptEnabled  = true
+        //binding?.webView?.settings?.javaScriptEnabled  = true
 
     }
 
