@@ -10,7 +10,6 @@
         android:id="@+id/tool_bar_download"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_marginBottom="40dp"
         style="@style/Base_ToolbarStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

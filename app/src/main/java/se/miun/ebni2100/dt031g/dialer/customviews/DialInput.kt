@@ -66,10 +66,6 @@ class DialInput @JvmOverloads constructor(
 
     }
 
-
-    /**
-     * THIS I DID IN SUBTASK 1
-     */
     fun makePhoneCall(){
         val phoneToCall = binding.dialText.text
 
