@@ -37,4 +37,28 @@
     <string name="ok_dialog">OK</string>
     <string name="already_seen">You have already seen the About-dialog</string>
 
+    <!-- Dial-pads strings -->
+    <string name="dialpad_0_title">0</string>
+    <string name="dialpad_1_title">1</string>
+    <string name="dialpad_2_title">2</string>
+    <string name="dialpad_3_title">3</string>
+    <string name="dialpad_4_title">4</string>
+    <string name="dialpad_5_title">5</string>
+    <string name="dialpad_6_title">6</string>
+    <string name="dialpad_7_title">7</string>
+    <string name="dialpad_8_title">8</string>
+    <string name="dialpad_9_title">9</string>
+    <string name="dialpad_star_title">*</string>
+    <string name="dialpad_pound_title">#</string>
+
+    <string name="dialpad_0_msg">+</string>
+    <string name="dialpad_2_msg">ABC</string>
+    <string name="dialpad_3_msg">DEF</string>
+    <string name="dialpad_4_msg">GHI</string>
+    <string name="dialpad_5_msg">JKL</string>
+    <string name="dialpad_6_msg">MNO</string>
+    <string name="dialpad_7_msg">PGRS</string>
+    <string name="dialpad_8_msg">TUV</string>
+    <string name="dialpad_9_msg">WXYZ</string>
+
 </resources>
