@@ -68,6 +68,7 @@
     <string name="dialpad_7_msg">PGRS</string>
     <string name="dialpad_8_msg">TUV</string>
     <string name="dialpad_9_msg">WXYZ</string>
+    <string name="_33">33%</string>
 
 
 </resources>

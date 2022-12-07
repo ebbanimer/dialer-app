@@ -7,21 +7,29 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
-import android.os.PersistableBundle
+import android.os.*
+import android.util.Log
 import android.webkit.DownloadListener
 import android.webkit.URLUtil
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDownloadBinding
+import se.miun.ebni2100.dt031g.dialer.support.Util
 import java.io.File
+import java.lang.ref.WeakReference
+import java.net.URL
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -32,12 +40,21 @@ import java.util.concurrent.Executors
  */
 class DownloadActivity : AppCompatActivity() {
 
+    // REGISTER A DOWNLOAD-LISTENER
+    // onDownloadStart CHECK AND MANAGE THE DOWNLOADS BEING MADE
+    // DOWNLOAD & UNZIP IN BACKGROUND THREAD (COROUTINE)
+    // PROVIDE LOCATION TO STORE IN THE INTENT
+    // USE THE CLASSES 'URL' AND 'URLConnection' TO CREATE InputStream TO THE FILE BEING DOWNLOADED
+    // USE Util.unzip FOR THE DOWNLOADED FILE
+    // WHILE BEING DOWNLOADED, USE ProgressDialog
+
+
     var binding : ActivityDownloadBinding? = null
-    private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
-    var isWorking = false
     lateinit var webView : WebView
     lateinit var webSite : String
-    lateinit var downloadListener : DownloadListener
+    lateinit var destDir : String
+    var triggered = false
+    private lateinit var urlDownload : String
 
     @SuppressLint("SetJavaScriptEnabled")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -45,18 +62,18 @@ class DownloadActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_download)
 
-        //if(savedInstanceState != null)
-        //    isWorking = savedInstanceState.getBoolean("savedBooleanWork")
-
         binding = ActivityDownloadBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
         setSupportActionBar(binding!!.toolBarDownload)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        println(Thread.currentThread().name + " in on create. fiffi")
-
         initWebView()
-        executorService.execute(this::setDownloadListener)
+
+
+        //if(savedInstanceState != null)
+        //    isWorking = savedInstanceState.getBoolean("savedBooleanWork")
+
+        //executorService.execute(this::setDownloadListener)
         //setDownloadListener()
         //createDownloadListener()
         //onDownloadComplete()
@@ -71,13 +88,21 @@ class DownloadActivity : AppCompatActivity() {
     }
 
 
+    /**
+     * Create web-view
+     */
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView(){
-        webView = binding!!.webView
+        this.webView = binding!!.webView
 
-        webSite = "https://dt031g.programvaruteknik.nu/dialer/voices/"
-        webView.loadUrl(webSite)
-        webView.settings.javaScriptEnabled = true
+        binding.apply {
+            webSite = "https://dt031g.programvaruteknik.nu/dialer/voices/"
+            webView.loadUrl(webSite)
+            webView.settings.javaScriptEnabled = true
+            destDir = intent.getStringExtra("dir").toString()
+            println("Fisis This is the destDir from init web view: $destDir")
+        }
+
 
         //webView.webViewClient = WebViewClient()
         //intent.extras?.getString("url")?.let { webView.loadUrl(it) }
@@ -85,12 +110,191 @@ class DownloadActivity : AppCompatActivity() {
         webView.webViewClient = object : WebViewClient() {
             @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                view.loadUrl(url)
-                return true
+                urlDownload = url
+                if (!triggered){
+                    triggered = true
+                    if(hasWriteStoragePermission()){
+                        // setDownloadListener()
+                        DownloadAsync(
+                            this@DownloadActivity,
+                            URLUtil.guessFileName(url, null, null),
+                            url, destDir
+                        ).execute(URL(url))
+                    }else{
+                        requestCallPhonePermission()
+                    }
+                }
+                return false
             }
         }
     }
-    
+
+    // request the permission
+    private val requestPermissionLauncher = registerForActivityResult( ActivityResultContracts.RequestPermission() ) { isGranted: Boolean ->
+        if (isGranted) {
+            //setDownloadListener()
+            binding?.webView?.loadUrl(urlDownload)
+        } else {
+            Toast.makeText( this,
+                "Write External Storage permission allows us to save files. Please allow this permission in App Settings.",
+                Toast.LENGTH_LONG
+            ).show()
+            triggered = false
+        }
+    }
+
+
+    // verify if it has permission
+    private fun hasWriteStoragePermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    }
+
+
+    private fun requestCallPhonePermission(){
+        requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    }
+
+    companion object{
+        class DownloadAsync constructor(activity: DownloadActivity, private val fileName: String, private val url: String, private val destDir: String): AsyncTask<URL, Int, Unit>(){
+
+            private val weakRef: WeakReference<DownloadActivity> = WeakReference(activity)
+
+
+            @Deprecated("Deprecated in Java")
+            override fun doInBackground(vararg urls: URL?) {
+
+                val request = DownloadManager.Request(Uri.parse(url))
+                request.allowScanningByMediaScanner()
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) //Notify client once download is completed!
+
+                val fileName = URLUtil.guessFileName(url, null, null)
+                request.setDestinationInExternalPublicDir( Environment.DIRECTORY_DOWNLOADS, fileName )
+                val dm = weakRef.get()?.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+                dm.enqueue(request)
+
+                val path ="${Environment.DIRECTORY_DOWNLOADS}/${fileName}"
+
+                println("Fisis This is the path name: $path")
+                println("Fisis This is the new dir name: $destDir")
+
+                if (Util.unzip(File(path), File(destDir))){
+                    println("it was successful hallåja")
+                } else {
+                    println("it was NOT successful hallåja")
+                }
+
+
+
+                //File(path).let { sourceFile ->
+                //    sourceFile.copyTo(File("C:/Users/sampleuser/Documents/test.txt"))
+                //    sourceFile.delete()
+                //}
+
+                /* urls.first()?.let{ url ->
+
+                     try{
+                         val connection = url.openConnection().also { it?.connect() }
+                         val length = connection?.contentLength
+                         val input = BufferedInputStream(url.openStream(),100*1024)
+                         val data =  ByteArray(1024)
+
+
+                         val root = Environment.getExternalStorageDirectory().toString()
+
+                         val output =  FileOutputStream(root+"/"+fileName)
+                         println("DownloadActivity doInBackground root: ${root+"/"+fileName}")
+
+                         var count = 0
+                         var total = 0
+                         while ( count != -1){
+                             count = input.read(data)
+                             total += count
+                             output.write(data, 0, count)
+                         }
+
+                         output.flush()
+                         output.close()
+                         input.close()
+                     }catch (e: Exception){
+                         println("DownloadActivity doInBackground exception: ${e.message}")
+                     }*/
+
+
+
+                /* try{
+                     Thread.sleep(3000)
+                 }catch (e :Exception){
+                     e.printStackTrace()
+                 }*/
+            }
+
+            @Deprecated("Deprecated in Java")
+            override fun onPreExecute() {
+                super.onPreExecute()
+                weakRef.get()?.binding?.customPb?.setTitle(fileName)
+                weakRef.get()?.binding?.customPb?.isVisible = true
+            }
+
+            @Deprecated("Deprecated in Java")
+            override fun onPostExecute(result: Unit?) {
+                super.onPostExecute(result)
+
+                weakRef.get()?.binding?.customPb?.isVisible = false
+                weakRef.get()?.let{
+                    it.triggered = false
+                    Toast.makeText(it,"Download Completed", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            @Deprecated("Deprecated in Java",
+                ReplaceWith("super.onProgressUpdate(*values)", "android.os.AsyncTask")
+            )
+            override fun onProgressUpdate(vararg values: Int?) {
+                super.onProgressUpdate(*values)
+            }
+
+        }
+    }
+
+
+    /**
+     * Register the download-listener.
+     */
+    /*private fun registerDownLoadListener(){
+        checkDownloadPermission()
+        // CHECK AND MANAGE THE DOWNLOADS BEING MADE
+        webView.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
+
+            GlobalScope.launch {
+                delay(20)
+                Log.d(TAG, "Coroutine Hello from thread ${Thread.currentThread().name}")
+            }
+        }
+    }*/
+
+    /*private fun checkDownloadPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this@DownloadActivity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        ) {
+            Toast.makeText(
+                this@DownloadActivity,
+                "Write External Storage permission allows us to save files. Please allow this permission in App Settings.",
+                Toast.LENGTH_LONG
+            ).show()
+        } else {
+            ActivityCompat.requestPermissions(
+                this@DownloadActivity,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                100
+            )
+        }
+    }
+
+
+    /*
     private fun setDownloadListener(){
         webView.setDownloadListener { url, userAgent, contentDisposition, mimetype, contentLength ->
             isWorking = true
@@ -123,9 +327,9 @@ class DownloadActivity : AppCompatActivity() {
             //Util.unzip(fileName, Util.getInternalStorageDir())
 
         }
-    }
+    }*/
 
-    private fun unzipFiles(string: String){
+    /*private fun unzipFiles(string: String){
 
         val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 
@@ -226,5 +430,5 @@ class DownloadActivity : AppCompatActivity() {
 
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         }*/
-    }
+    }*/*/
 }

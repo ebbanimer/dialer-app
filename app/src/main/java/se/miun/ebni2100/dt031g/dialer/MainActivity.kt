@@ -56,6 +56,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.downloadBtn.setOnClickListener {
             val intent = Intent(this, DownloadActivity::class.java)
+            intent.putExtra(
+                "url",
+                "https://dt031g.programvaruteknik.nu/dialer/voices/")
+            intent.putExtra(
+                "dir", Util.getInternalStorageDir(this))
+            println("This is from main activity fisis: " + Util.getInternalStorageDir(this))
             startActivity(intent)
         }
 
@@ -71,11 +77,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.mapBtn.setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)
-            intent.putExtra(
-                "url",
-                "https://dt031g.programvaruteknik.nu/dialer/voices/")
-            intent.putExtra(
-                "dir", Util.getInternalStorageDir(this))
             startActivity(intent)
         }
 
