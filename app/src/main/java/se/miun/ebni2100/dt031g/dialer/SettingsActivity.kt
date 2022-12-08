@@ -39,6 +39,7 @@ class SettingsActivity : AppCompatActivity() {
                     .commit()
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
     }
 
     /**
@@ -70,6 +71,12 @@ class SettingsActivity : AppCompatActivity() {
                 PreferenceManager.getDefaultSharedPreferences(context)
             return sharedPreferences.getBoolean(context.getString(R.string.store_key), true)
         }
+
+        /*fun voiceToUse(context: Context): String {
+            val sharedPreferences: SharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context)
+            return sharedPreferences.getBoolean(context.getString(R.string.store_key), true)
+        }*/
 
     }
 

@@ -15,4 +15,10 @@
         app:icon="@drawable/ic_baseline_delete_forever_24"
         app:summary="@string/delete_numbers_summary"/>
 
+    <ListPreference
+        app:key="@string/voice_key"
+        app:title="@string/voice_title"
+        app:icon="@drawable/ic_baseline_record_voice_over_24"
+        />
+
 </PreferenceScreen>
