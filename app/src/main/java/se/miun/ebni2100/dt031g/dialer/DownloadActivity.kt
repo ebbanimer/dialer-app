@@ -49,12 +49,14 @@ class DownloadActivity : AppCompatActivity() {
     // WHILE BEING DOWNLOADED, USE ProgressDialog
 
 
+
     var binding : ActivityDownloadBinding? = null
     lateinit var webView : WebView
     lateinit var webSite : String
     lateinit var destDir : String
     var triggered = false
     private lateinit var urlDownload : String
+    private lateinit var downLoadAsync : AsyncTask<URL, Int, Unit>
 
     @SuppressLint("SetJavaScriptEnabled")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -96,16 +98,12 @@ class DownloadActivity : AppCompatActivity() {
         this.webView = binding!!.webView
 
         binding.apply {
-            webSite = "https://dt031g.programvaruteknik.nu/dialer/voices/"
+            webSite = intent.getStringExtra("url").toString()
+            destDir = intent.getStringExtra("dir").toString()
+
             webView.loadUrl(webSite)
             webView.settings.javaScriptEnabled = true
-            destDir = intent.getStringExtra("dir").toString()
-            println("Fisis This is the destDir from init web view: $destDir")
         }
-
-
-        //webView.webViewClient = WebViewClient()
-        //intent.extras?.getString("url")?.let { webView.loadUrl(it) }
 
         webView.webViewClient = object : WebViewClient() {
             @Deprecated("Deprecated in Java")
@@ -114,8 +112,7 @@ class DownloadActivity : AppCompatActivity() {
                 if (!triggered){
                     triggered = true
                     if(hasWriteStoragePermission()){
-                        // setDownloadListener()
-                        DownloadAsync(
+                        downLoadAsync = DownloadAsync(
                             this@DownloadActivity,
                             URLUtil.guessFileName(url, null, null),
                             url, destDir
@@ -136,7 +133,8 @@ class DownloadActivity : AppCompatActivity() {
             binding?.webView?.loadUrl(urlDownload)
         } else {
             Toast.makeText( this,
-                "Write External Storage permission allows us to save files. Please allow this permission in App Settings.",
+                "Write External Storage permission allows us to save files. Please allow this " +
+                        "permission in App Settings.",
                 Toast.LENGTH_LONG
             ).show()
             triggered = false
@@ -160,7 +158,7 @@ class DownloadActivity : AppCompatActivity() {
 
             private val weakRef: WeakReference<DownloadActivity> = WeakReference(activity)
 
-
+            @SuppressLint("SdCardPath")
             @Deprecated("Deprecated in Java")
             override fun doInBackground(vararg urls: URL?) {
 
@@ -168,15 +166,11 @@ class DownloadActivity : AppCompatActivity() {
                 request.allowScanningByMediaScanner()
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) //Notify client once download is completed!
 
-                val fileName = URLUtil.guessFileName(url, null, null)
                 request.setDestinationInExternalPublicDir( Environment.DIRECTORY_DOWNLOADS, fileName )
                 val dm = weakRef.get()?.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
                 dm.enqueue(request)
 
-                val path ="${Environment.DIRECTORY_DOWNLOADS}/${fileName}"
-
-                println("Fisis This is the path name: $path")
-                println("Fisis This is the new dir name: $destDir")
+                val path = Environment.getExternalStorageDirectory().toString() +"/Download/" + fileName
 
                 if (Util.unzip(File(path), File(destDir))){
                     println("it was successful hallåja")
@@ -184,12 +178,7 @@ class DownloadActivity : AppCompatActivity() {
                     println("it was NOT successful hallåja")
                 }
 
-
-
-                //File(path).let { sourceFile ->
-                //    sourceFile.copyTo(File("C:/Users/sampleuser/Documents/test.txt"))
-                //    sourceFile.delete()
-                //}
+                Thread.sleep(20)
 
                 /* urls.first()?.let{ url ->
 
@@ -228,6 +217,7 @@ class DownloadActivity : AppCompatActivity() {
                      e.printStackTrace()
                  }*/
             }
+
 
             @Deprecated("Deprecated in Java")
             override fun onPreExecute() {

@@ -68,6 +68,10 @@
     <string name="dialpad_7_msg">PGRS</string>
     <string name="dialpad_8_msg">TUV</string>
     <string name="dialpad_9_msg">WXYZ</string>
+
+    <!-- DOWNLOAD VALUES -->
+    <string name="url_site">https://dt031g.programvaruteknik.nu/dialer/voices/</string>
+    <string name="new_dir">/data/user/0/se.miun.ebni2100.dt031g.dialer/files/voices/</string>
     <string name="_33">33%</string>
 
 

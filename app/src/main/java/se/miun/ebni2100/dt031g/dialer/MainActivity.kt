@@ -1,5 +1,6 @@
 package se.miun.ebni2100.dt031g.dialer
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -57,13 +58,13 @@ class MainActivity : AppCompatActivity() {
         binding.downloadBtn.setOnClickListener {
             val intent = Intent(this, DownloadActivity::class.java)
             intent.putExtra(
-                "url",
-                "https://dt031g.programvaruteknik.nu/dialer/voices/")
+                "url", "https://dt031g.programvaruteknik.nu/dialer/voices/"
+                )
             intent.putExtra(
-                "dir", Util.getInternalStorageDir(this))
-            println("This is from main activity fisis: " + Util.getInternalStorageDir(this))
+                "dir", "/data/user/0/se.miun.ebni2100.dt031g.dialer/files/voices/")
             startActivity(intent)
         }
+
 
         binding.callBtn.setOnClickListener {
             val intent = Intent(this, CallListActivity::class.java)
