@@ -13,6 +13,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import se.miun.ebni2100.dt031g.dialer.databinding.SettingsActivityBinding
+import java.io.File
 
 /**
  * Activity class for settings.
@@ -76,6 +77,10 @@ class SettingsActivity : AppCompatActivity() {
             return sharedPreferences.getBoolean(context.getString(R.string.store_key), true)
         }
 
+        fun addEntries(voice: String){
+
+        }
+
         /*fun voiceToUse(context: Context): String {
             voicePref
             val sharedPreferences: SharedPreferences =
@@ -85,6 +90,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
+
 
         /**
          * Inflates root_preferences.xml file as layout
@@ -104,10 +110,19 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val voicePref: ListPreference? = findPreference(getString(R.string.voice_key))
-            val voices = arrayOf("hello", "bajs")
 
-            voicePref?.entries = voices
-            voicePref?.entryValues = voices
+            val mutableList : MutableList<String> = arrayListOf()
+
+            File("/data/user/0/se.miun.ebni2100.dt031g.dialer/files/voices/").walk().forEach {
+                if (it.isDirectory){
+                    if (it.name != "voices"){
+                        mutableList.add(it.name)
+                    }
+                }
+            }
+
+            voicePref?.entries = mutableList.toTypedArray()
+            voicePref?.entryValues = mutableList.toTypedArray()
 
             voicePref?.setOnPreferenceChangeListener { preference, newValue ->
                 if (preference is ListPreference) {
@@ -121,9 +136,6 @@ class SettingsActivity : AppCompatActivity() {
 
                 true
             }
-
-
-
 
         }
 
