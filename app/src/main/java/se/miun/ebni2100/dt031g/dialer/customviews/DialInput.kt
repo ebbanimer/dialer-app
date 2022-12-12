@@ -55,6 +55,12 @@ class DialInput @JvmOverloads constructor(
             binding.dialText.text = newS
         }
 
+        // Erase all numbers when long click.
+        binding.imgDelete.setOnLongClickListener {
+            binding.dialText.text = ""
+            true
+        }
+
         // Create new dial intent.
         binding.imgPhone.setOnClickListener {
             if (shouldStoreNumbers(context)){
