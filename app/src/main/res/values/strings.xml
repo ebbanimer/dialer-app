@@ -28,7 +28,7 @@
     <!-- Voice settings preferences -->
     <string name="voice_key">"choose_voice"</string>
     <string name="voice_title">"Voices"</string>
-    <string name="voice_summary"></string>
+    <string name="voice_summary">mamacita_us</string>
 
     <!-- About dialog -->
     <string name="about_title">About</string>

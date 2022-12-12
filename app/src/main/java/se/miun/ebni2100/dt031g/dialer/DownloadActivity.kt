@@ -3,15 +3,9 @@ package se.miun.ebni2100.dt031g.dialer
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DownloadManager
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.*
-import android.util.Log
-import android.webkit.DownloadListener
 import android.webkit.URLUtil
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -19,19 +13,13 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDownloadBinding
 import se.miun.ebni2100.dt031g.dialer.support.Util
 import java.io.File
 import java.lang.ref.WeakReference
 import java.net.URL
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 
 /**
@@ -99,7 +87,10 @@ class DownloadActivity : AppCompatActivity() {
 
         binding.apply {
             webSite = intent.getStringExtra("url").toString()
-            destDir = intent.getStringExtra("dir").toString()
+            //destDir = intent.getStringExtra("dir").toString()
+            destDir = "/data/user/0/se.miun.ebni2100.dt031g.dialer/files/voices/"
+
+
 
             webView.loadUrl(webSite)
             webView.settings.javaScriptEnabled = true
@@ -111,14 +102,15 @@ class DownloadActivity : AppCompatActivity() {
                 urlDownload = url
                 if (!triggered){
                     triggered = true
-                    if(hasWriteStoragePermission()){
+                    if(hasWriteStoragePermission() && hasReadStoragePermission()){
                         downLoadAsync = DownloadAsync(
                             this@DownloadActivity,
                             URLUtil.guessFileName(url, null, null),
                             url, destDir
                         ).execute(URL(url))
                     }else{
-                        requestCallPhonePermission()
+                        requestWriteStoragePermission()
+                        requestReadStoragePermission()
                     }
                 }
                 return false
@@ -148,13 +140,22 @@ class DownloadActivity : AppCompatActivity() {
             Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
     }
 
+    private fun hasReadStoragePermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this,
+            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    }
 
-    private fun requestCallPhonePermission(){
+    private fun requestWriteStoragePermission(){
         requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    }
+
+    private fun requestReadStoragePermission(){
+        requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
     companion object{
         class DownloadAsync constructor(activity: DownloadActivity, private val fileName: String, private val url: String, private val destDir: String): AsyncTask<URL, Int, Unit>(){
+
 
             private val weakRef: WeakReference<DownloadActivity> = WeakReference(activity)
 

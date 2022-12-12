@@ -20,6 +20,7 @@ class SoundPlayer private constructor(private val context: Context) {
         ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, POUND, STAR
     }
 
+    private var selectedVoice: String? = null
     private var soundPool: SoundPool? = null
     private lateinit var soundIds: MutableMap<Dials, Int>
 
@@ -45,6 +46,10 @@ class SoundPlayer private constructor(private val context: Context) {
             }
             return theInstance!!
         }
+    }
+
+    public fun setSelectedVoice(voice: String){
+        this.selectedVoice = voice
     }
 
     /**

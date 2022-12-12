@@ -5,7 +5,10 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.ListPreference
+import androidx.preference.ListPreference.SimpleSummaryProvider
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -18,6 +21,8 @@ import se.miun.ebni2100.dt031g.dialer.databinding.SettingsActivityBinding
 class SettingsActivity : AppCompatActivity() {
 
     var binding: SettingsActivityBinding? = null
+    var voicePref: ListPreference? = null
+    var chosenVoice: String? = null
 
     /**
      * Upon creation, initialize view-binding, display layout, and settings-fragment.
@@ -39,7 +44,6 @@ class SettingsActivity : AppCompatActivity() {
                     .commit()
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
     }
 
     /**
@@ -73,11 +77,11 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         /*fun voiceToUse(context: Context): String {
+            voicePref
             val sharedPreferences: SharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context)
             return sharedPreferences.getBoolean(context.getString(R.string.store_key), true)
         }*/
-
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
@@ -98,6 +102,29 @@ class SettingsActivity : AppCompatActivity() {
                 clearStoredNumbers()
                 true
             }
+
+            val voicePref: ListPreference? = findPreference(getString(R.string.voice_key))
+            val voices = arrayOf("hello", "bajs")
+
+            voicePref?.entries = voices
+            voicePref?.entryValues = voices
+
+            voicePref?.setOnPreferenceChangeListener { preference, newValue ->
+                if (preference is ListPreference) {
+                    val index = preference.findIndexOfValue(newValue.toString())
+                    val entry = preference.entries[index]
+                    val entryvalue = preference.entryValues[index]
+                    voicePref.summary = entry
+                    println("haj entry is: $entry")
+                    println("haj entryvalue is: $entryvalue")
+                }
+
+                true
+            }
+
+
+
+
         }
 
         /**
@@ -109,5 +136,6 @@ class SettingsActivity : AppCompatActivity() {
             val editor = prefs.edit()
             editor.putStringSet(NUMBER_SET_KEY, toSave).apply()
         }
+
     }
 }

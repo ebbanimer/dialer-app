@@ -19,6 +19,10 @@
         app:key="@string/voice_key"
         app:title="@string/voice_title"
         app:icon="@drawable/ic_baseline_record_voice_over_24"
-        />
+        app:summary="@string/voice_summary"
+        app:entries="@array/entries"
+        app:entryValues="@array/entry_values"/>
+        <!--app:entries="@string/voice_summary"-->
+
 
 </PreferenceScreen>

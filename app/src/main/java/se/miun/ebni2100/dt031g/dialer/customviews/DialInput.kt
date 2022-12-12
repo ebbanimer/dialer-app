@@ -64,11 +64,17 @@ class DialInput @JvmOverloads constructor(
             binding.dialText.text = newS
         }
 
+
+        // Erase all numbers when long click.
+        binding.imgDelete.setOnLongClickListener {
+            binding.dialText.text = ""
+            true
+        }
+
     }
 
     fun makePhoneCall(){
         val phoneToCall = binding.dialText.text
-
         if (!phoneToCall.isNullOrEmpty()){
             println("access granted")
             Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneToCall")).also { context.startActivity(it) }
