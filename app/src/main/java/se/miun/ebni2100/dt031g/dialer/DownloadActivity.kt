@@ -173,6 +173,8 @@ class DownloadActivity : AppCompatActivity() {
 
                 val path = Environment.getExternalStorageDirectory().toString() +"/Download/" + fileName
 
+                println("inne i doinbackground")
+
                 if (Util.unzip(File(path), File(destDir))){
                     println("it was successful hallåja")
                 } else {

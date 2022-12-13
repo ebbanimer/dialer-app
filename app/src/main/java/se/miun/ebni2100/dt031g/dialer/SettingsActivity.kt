@@ -14,6 +14,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import se.miun.ebni2100.dt031g.dialer.databinding.SettingsActivityBinding
 import se.miun.ebni2100.dt031g.dialer.support.SoundPlayer
+import se.miun.ebni2100.dt031g.dialer.support.Util
 import java.io.File
 
 /**
@@ -78,7 +79,8 @@ class SettingsActivity : AppCompatActivity() {
             return sharedPreferences.getBoolean(context.getString(R.string.store_key), true)
         }
 
-        fun addEntry(voice: String) {
+        fun addEntry() {
+            //createList()
         }
 
         fun voiceToUse(context: Context): String? {
@@ -109,17 +111,18 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val voicePref: ListPreference? = findPreference(getString(R.string.voice_key))
+            val sharedPreferences: SharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context)
 
-            /*val mutableList : MutableList<String> = arrayListOf()
+            val initVoice = sharedPreferences.getString((context?.getString(R.string.voice_key) ?: String) as String?, "mamacita_us")
 
-            File("/data/user/0/se.miun.ebni2100.dt031g.dialer/files/voices/").walk().forEach {
-                if (it.isDirectory){
-                    if (it.name != "voices"){
-                        mutableList.add(it.name)
-                    }
-                }
-            }*/
+            if (initVoice != null) {
+                context?.let { SoundPlayer.getInstance(it) }?.setSelectedVoice(initVoice)
+            } else {
+                context?.let { SoundPlayer.getInstance(it) }?.setSelectedVoice(Util.MAMACITA_DIR)
+            }
 
+            voicePref?.summary = initVoice
             voicePref?.entries = createList()
             voicePref?.entryValues = createList()
 
@@ -159,8 +162,6 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             return mutableList.toTypedArray()
-
         }
-
     }
 }

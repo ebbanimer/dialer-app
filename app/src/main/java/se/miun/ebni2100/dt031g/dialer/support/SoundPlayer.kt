@@ -6,6 +6,7 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Build
+import se.miun.ebni2100.dt031g.dialer.SettingsActivity.Companion.voiceToUse
 import se.miun.ebni2100.dt031g.dialer.customviews.DialpadButton
 import java.io.File
 
@@ -29,7 +30,7 @@ class SoundPlayer private constructor(private val context: Context) {
      */
     init {
         createSoundPool()
-        createSounds(Util.MAMACITA_DIR)
+        voiceToUse(context)?.let { createSounds(it) }
     }
 
     /**
