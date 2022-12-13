@@ -13,7 +13,7 @@
         app:key="@string/delete_key"
         app:title="@string/delete_numbers_title"
         app:icon="@drawable/ic_baseline_delete_forever_24"
-        app:summary="@string/delete_numbers_summary"/>
+        app:summary="@string/delete_numbers_summary" />
 
     <ListPreference
         app:key="@string/voice_key"
@@ -21,8 +21,7 @@
         app:icon="@drawable/ic_baseline_record_voice_over_24"
         app:summary="@string/voice_summary"
         app:entries="@array/entries"
-        app:entryValues="@array/entry_values"/>
-        <!--app:entries="@string/voice_summary"-->
-
+        app:entryValues="@array/entry_values"
+        app:defaultValue="mamacita_us"/>
 
 </PreferenceScreen>

@@ -1,7 +1,7 @@
 package se.miun.ebni2100.dt031g.dialer
 
-import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityMainBinding
 import se.miun.ebni2100.dt031g.dialer.support.Util
+
 
 /**
  * Activity class for main..
@@ -35,7 +36,8 @@ class MainActivity : AppCompatActivity() {
 
         clickEvents()
 
-        //PreferenceManager.setDefaultValues(this, R.xml.root_preferences, true)
+
+        PreferenceManager.setDefaultValues(this, R.xml.root_preferences, true)
     }
 
     override fun onResume() {

@@ -79,10 +79,6 @@ class SettingsActivity : AppCompatActivity() {
             return sharedPreferences.getBoolean(context.getString(R.string.store_key), true)
         }
 
-        fun addEntry() {
-            //createList()
-        }
-
         fun voiceToUse(context: Context): String? {
             val sharedPreferences: SharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context)
@@ -150,7 +146,7 @@ class SettingsActivity : AppCompatActivity() {
             editor.putStringSet(NUMBER_SET_KEY, toSave).apply()
         }
 
-        fun createList(): Array<String>{
+        private fun createList(): Array<String>{
             val mutableList : MutableList<String> = arrayListOf()
 
             File("/data/user/0/se.miun.ebni2100.dt031g.dialer/files/voices/").walk().forEach {
