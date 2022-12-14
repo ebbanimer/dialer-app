@@ -36,8 +36,6 @@ class DownloadActivity : AppCompatActivity() {
     private lateinit var urlDownload : String
     private lateinit var downLoadAsync : AsyncTask<URL, Int, Unit>
 
-
-
     @SuppressLint("SetJavaScriptEnabled")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +53,6 @@ class DownloadActivity : AppCompatActivity() {
         mProgressDialog!!.setCancelable(true)
         mProgressDialog!!.setIndeterminate(true)
         mProgressDialog!!.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
-        mProgressDialog!!.setMessage("Downloading...");
     }
 
 
@@ -68,10 +65,10 @@ class DownloadActivity : AppCompatActivity() {
 
         binding.apply {
             webSite = intent.getStringExtra("url").toString()
-            //destDir = intent.getStringExtra("dir").toString()
-            destDir = "/data/user/0/se.miun.ebni2100.dt031g.dialer/files/voices/"
+            destDir = intent.getStringExtra("dir").toString()
 
             webView.loadUrl(webSite)
+            webView.isVerticalScrollBarEnabled = true
             webView.settings.javaScriptEnabled = true
         }
 
@@ -92,7 +89,6 @@ class DownloadActivity : AppCompatActivity() {
                     }else{
                         requestWriteStoragePermission()
                         requestReadStoragePermission()
-                        //requestManageExternalStoragePermission()
                     }
                 }
                 return false
@@ -103,18 +99,15 @@ class DownloadActivity : AppCompatActivity() {
     // request the permission
     private val requestPermissionLauncher = registerForActivityResult( ActivityResultContracts.RequestPermission() ) { isGranted: Boolean ->
         if (isGranted) {
-            //setDownloadListener()
             binding?.webView?.loadUrl(urlDownload)
         } else {
             Toast.makeText( this,
-                "Write External Storage permission allows us to save files. Please allow this " +
-                        "permission in App Settings.",
+                R.string.request_download,
                 Toast.LENGTH_LONG
             ).show()
             triggered = false
         }
     }
-
 
     // verify if it has permission
     private fun hasWriteStoragePermission(): Boolean {
@@ -127,12 +120,6 @@ class DownloadActivity : AppCompatActivity() {
             Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
-    private fun hasManageExternalStoragePermission(): Boolean {
-        return ContextCompat.checkSelfPermission(this,
-            Manifest.permission.MANAGE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-    }
-
     private fun requestWriteStoragePermission(){
         requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     }
@@ -141,21 +128,17 @@ class DownloadActivity : AppCompatActivity() {
         requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
-
     companion object{
 
         private var mProgressDialog: ProgressDialog? = null
-        private var mProgressStatus = 0
 
         class DownloadAsync constructor(activity: DownloadActivity, private val fileName: String, private val url: String, private val destDir: String): AsyncTask<URL, Int, Unit>(){
-
-
             private val weakRef: WeakReference<DownloadActivity> = WeakReference(activity)
-            private var progress: Int = 0
-            private var downloadedLength: Int = 0
             private lateinit var mWakeLock: PowerManager.WakeLock
             @SuppressLint("StaticFieldLeak")
             var context: Context
+
+            private val root = Environment.getExternalStorageDirectory().toString()
 
             init {
                 this.context = activity
@@ -173,8 +156,6 @@ class DownloadActivity : AppCompatActivity() {
                         val input = BufferedInputStream(url.openStream(), 100 * 1024)
                         val data = ByteArray(1024)
 
-                        val root = Environment.getExternalStorageDirectory().toString()
-
                         val output = FileOutputStream("$root/Download/$fileName")
                         println("DownloadActivity doInBackground root: ${"$root/Download/$fileName"}")
 
@@ -190,22 +171,12 @@ class DownloadActivity : AppCompatActivity() {
 
                             total += count
                             if (length != null) {
-                                println("this is the length: $length")
                                 if (length > 0){
                                     publishProgress((total * 100) / length)
                                 }
                             }
                             output.write(data, 0, count)
                             Thread.sleep(20)
-                            println("in while loop count: $count and total $total")
-                        }
-
-                        println("now it is done!")
-
-                        if (Util.unzip(File("$root/Download/$fileName"), File(destDir))){
-                            println("it was successful hallåja")
-                        } else {
-                            println("it was NOT successful hallåja")
                         }
 
                         output.flush()
@@ -213,10 +184,10 @@ class DownloadActivity : AppCompatActivity() {
                         input.close()
 
                     } catch (e: Exception) {
-                        println("DownloadActivity doInBackground exception: ${e.message} and $e")
+                        println("DownloadActivity doInBackground exception: ${e.message}")
                     }
                     try {
-                        Thread.sleep(3000)
+                        Thread.sleep(1000)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -318,7 +289,8 @@ class DownloadActivity : AppCompatActivity() {
             @Deprecated("Deprecated in Java")
             override fun onPreExecute() {
                 super.onPreExecute()
-
+                mProgressDialog?.setTitle(R.string.download_title)
+                mProgressDialog?.setMessage(fileName)
                 mWakeLock =
                     (context.getSystemService(POWER_SERVICE) as PowerManager).run {
                         newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, javaClass.name).apply {
@@ -353,10 +325,12 @@ class DownloadActivity : AppCompatActivity() {
                 super.onPostExecute(result)
                 mWakeLock.release()
                 mProgressDialog?.dismiss()
-                if (result != null)
-                    Toast.makeText(context,"Download errorhaj: "+result, Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(context,"File downloaded", Toast.LENGTH_SHORT).show();
+
+                if (Util.unzip(File("$root/Download/$fileName"), File(destDir))){
+                    Toast.makeText(context,R.string.download_success, Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context,R.string.download_fail, Toast.LENGTH_LONG).show()
+                }
 
                 /*mProgressDialog?.setProgress(100)
                 //mProgressDialog?.dismiss();

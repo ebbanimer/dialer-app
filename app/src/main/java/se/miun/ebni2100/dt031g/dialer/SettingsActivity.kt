@@ -126,7 +126,6 @@ class SettingsActivity : AppCompatActivity() {
                 if (preference is ListPreference) {
                     val index = preference.findIndexOfValue(newValue.toString())
                     val entry = preference.entries[index]
-                    val entryvalue = preference.entryValues[index]
                     voicePref.summary = entry
                     context?.let { SoundPlayer.getInstance(it) }?.setSelectedVoice(entry as String)
                 }
@@ -149,7 +148,7 @@ class SettingsActivity : AppCompatActivity() {
         private fun createList(): Array<String>{
             val mutableList : MutableList<String> = arrayListOf()
 
-            File("/data/user/0/se.miun.ebni2100.dt031g.dialer/files/voices/").walk().forEach {
+            File(getString(R.string.new_dir)).walk().forEach {
                 if (it.isDirectory){
                     if (it.name != "voices"){
                         mutableList.add(it.name)

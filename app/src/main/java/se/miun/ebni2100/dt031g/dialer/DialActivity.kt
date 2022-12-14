@@ -49,6 +49,9 @@ class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
 
     }
 
+    /**
+     * Display alert for permission to call.
+     */
     private fun displayRationale(){
         val builder = AlertDialog.Builder(this)
             .setTitle(R.string.call_title)

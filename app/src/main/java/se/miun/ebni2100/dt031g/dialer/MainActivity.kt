@@ -1,5 +1,6 @@
 package se.miun.ebni2100.dt031g.dialer
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -35,8 +36,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         clickEvents()
-
-
         PreferenceManager.setDefaultValues(this, R.xml.root_preferences, true)
     }
 
@@ -63,10 +62,11 @@ class MainActivity : AppCompatActivity() {
         binding.downloadBtn.setOnClickListener {
             val intent = Intent(this, DownloadActivity::class.java)
             intent.putExtra(
-                "url", "https://dt031g.programvaruteknik.nu/dialer/voices/"
+                "url", getString(R.string.url_web)
                 )
             intent.putExtra(
-                "dir", "/data/user/0/se.miun.ebni2100.dt031g.dialer/files/voices/")
+                "dir", getString(R.string.new_dir)
+            )
             startActivity(intent)
         }
 

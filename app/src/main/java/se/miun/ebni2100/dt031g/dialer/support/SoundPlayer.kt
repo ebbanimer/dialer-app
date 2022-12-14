@@ -49,6 +49,9 @@ class SoundPlayer private constructor(private val context: Context) {
         }
     }
 
+    /**
+     * Gets the selected voice and creates new sounds.
+     */
     fun setSelectedVoice(voice: String){
         this.selectedVoice = voice
         createSounds(selectedVoice!!)
