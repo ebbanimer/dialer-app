@@ -76,6 +76,7 @@ class DownloadActivity : AppCompatActivity() {
         }
 
         webView.webViewClient = object : WebViewClient() {
+            @RequiresApi(Build.VERSION_CODES.R)
             @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 urlDownload = url
@@ -91,6 +92,7 @@ class DownloadActivity : AppCompatActivity() {
                     }else{
                         requestWriteStoragePermission()
                         requestReadStoragePermission()
+                        //requestManageExternalStoragePermission()
                     }
                 }
                 return false
@@ -125,6 +127,12 @@ class DownloadActivity : AppCompatActivity() {
             Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun hasManageExternalStoragePermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    }
+
     private fun requestWriteStoragePermission(){
         requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     }
@@ -132,6 +140,7 @@ class DownloadActivity : AppCompatActivity() {
     private fun requestReadStoragePermission(){
         requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
+
 
     companion object{
 
@@ -344,13 +353,11 @@ class DownloadActivity : AppCompatActivity() {
                 super.onPostExecute(result)
                 mWakeLock.release()
                 mProgressDialog?.dismiss()
-                Toast.makeText(context,"Download Completed", Toast.LENGTH_SHORT).show()
-                /*if (result != null)
+                if (result != null)
                     Toast.makeText(context,"Download errorhaj: "+result, Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(context,"File downloaded", Toast.LENGTH_SHORT).show();
 
-                */
                 /*mProgressDialog?.setProgress(100)
                 //mProgressDialog?.dismiss();
 
