@@ -24,8 +24,6 @@ import java.io.File
 class SettingsActivity : AppCompatActivity() {
 
     var binding: SettingsActivityBinding? = null
-    var voicePref: ListPreference? = null
-    var chosenVoice: String? = null
 
     /**
      * Upon creation, initialize view-binding, display layout, and settings-fragment.
@@ -79,6 +77,9 @@ class SettingsActivity : AppCompatActivity() {
             return sharedPreferences.getBoolean(context.getString(R.string.store_key), true)
         }
 
+        /**
+         * Provide to the user which the selected voice is.
+         */
         fun voiceToUse(context: Context): String? {
             val sharedPreferences: SharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context)
@@ -87,7 +88,6 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
-
 
         /**
          * Inflates root_preferences.xml file as layout
@@ -106,22 +106,28 @@ class SettingsActivity : AppCompatActivity() {
                 true
             }
 
+            // Get list preferences
             val voicePref: ListPreference? = findPreference(getString(R.string.voice_key))
             val sharedPreferences: SharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context)
 
+            // Retrieve the chosen voice from shared preferences.
             val initVoice = sharedPreferences.getString((context?.getString(R.string.voice_key) ?: String) as String?, "mamacita_us")
 
+            // Set the selected voice in SoundPlayer.
             if (initVoice != null) {
                 context?.let { SoundPlayer.getInstance(it) }?.setSelectedVoice(initVoice)
             } else {
+                // If voice is null, send default mamacita.
                 context?.let { SoundPlayer.getInstance(it) }?.setSelectedVoice(Util.MAMACITA_DIR)
             }
 
+            // Display chosen voice in summary and populate list-preferences.
             voicePref?.summary = initVoice
             voicePref?.entries = createList()
             voicePref?.entryValues = createList()
 
+            // If the selected voice changes, change the summary and update voice in SoundPlayer.
             voicePref?.setOnPreferenceChangeListener { preference, newValue ->
                 if (preference is ListPreference) {
                     val index = preference.findIndexOfValue(newValue.toString())
@@ -145,6 +151,9 @@ class SettingsActivity : AppCompatActivity() {
             editor.putStringSet(NUMBER_SET_KEY, toSave).apply()
         }
 
+        /**
+         * Create and populate list-preferences based on files in local storage.
+         */
         private fun createList(): Array<String>{
             val mutableList : MutableList<String> = arrayListOf()
 

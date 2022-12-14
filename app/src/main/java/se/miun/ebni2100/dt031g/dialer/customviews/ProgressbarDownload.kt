@@ -9,6 +9,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import se.miun.ebni2100.dt031g.dialer.R
 import se.miun.ebni2100.dt031g.dialer.databinding.ProgressbarLayoutBinding
 
+/**
+ * Progressbar to display download. Not used.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 class ProgressbarDownload @JvmOverloads constructor(
     context: Context,

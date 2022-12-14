@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Util.getInternalStorageDir(this)
-
     }
 
     override fun onPause() {
