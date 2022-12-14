@@ -32,7 +32,7 @@ class DownloadActivity : AppCompatActivity() {
     lateinit var webView : WebView
     lateinit var webSite : String
     lateinit var destDir : String
-    var triggered = false
+
     private lateinit var urlDownload : String
     private lateinit var downLoadAsync : AsyncTask<URL, Int, Unit>
 
@@ -77,15 +77,18 @@ class DownloadActivity : AppCompatActivity() {
             @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 urlDownload = url
+                println("from shouldoverrideurlloading HAJ")
                 if (!triggered){
+                    println("from if !triggered")
                     triggered = true
                     if(hasWriteStoragePermission() && hasReadStoragePermission()){
-                        downLoadAsync = DownloadAsync(
+                        DownloadAsync(
                             this@DownloadActivity,
                             URLUtil.guessFileName(url, null, null),
                             url, destDir
                         ).execute(URL(url))
-                        mProgressDialog?.show();
+                        println("from starting downloadasync HAJ")
+                        mProgressDialog?.show()
                     }else{
                         requestWriteStoragePermission()
                         requestReadStoragePermission()
@@ -131,6 +134,7 @@ class DownloadActivity : AppCompatActivity() {
     companion object{
 
         private var mProgressDialog: ProgressDialog? = null
+        private var triggered = false
 
         class DownloadAsync constructor(activity: DownloadActivity, private val fileName: String, private val url: String, private val destDir: String): AsyncTask<URL, Int, Unit>(){
             private val weakRef: WeakReference<DownloadActivity> = WeakReference(activity)
@@ -142,15 +146,20 @@ class DownloadActivity : AppCompatActivity() {
 
             init {
                 this.context = activity
+
+                println("from init downloadasync HAJ")
             }
 
             @SuppressLint("SdCardPath", "RestrictedApi", "Range")
             @Deprecated("Deprecated in Java")
             override fun doInBackground(vararg urls: URL?) {
 
+                println("from doinbackground HAJ")
                 urls.first()?.let { url ->
 
                     try {
+
+                        println("from try HAJ")
                         val connection = url.openConnection().also { it?.connect() }
                         val length = connection?.contentLength
                         val input = BufferedInputStream(url.openStream(), 100 * 1024)
@@ -285,6 +294,7 @@ class DownloadActivity : AppCompatActivity() {
                 Thread.sleep(3000)*/
 
             }
+            @SuppressLint("WrongThread")
             @RequiresApi(Build.VERSION_CODES.O)
             @Deprecated("Deprecated in Java")
             override fun onPreExecute() {
@@ -298,6 +308,7 @@ class DownloadActivity : AppCompatActivity() {
                         }
                     }
                 mProgressDialog?.show()
+                publishProgress(0)
                 //mProgressStatus = 0
 
             /*weakRef.get()?.binding?.customPb?.setTitle(fileName)
@@ -325,12 +336,16 @@ class DownloadActivity : AppCompatActivity() {
                 super.onPostExecute(result)
                 mWakeLock.release()
                 mProgressDialog?.dismiss()
+                val file = File("$root/Download/$fileName")
 
-                if (Util.unzip(File("$root/Download/$fileName"), File(destDir))){
+                if (Util.unzip(file, File(destDir))){
                     Toast.makeText(context,R.string.download_success, Toast.LENGTH_SHORT).show()
+                    file.delete()
                 } else {
                     Toast.makeText(context,R.string.download_fail, Toast.LENGTH_LONG).show()
                 }
+
+                triggered = false
 
                 /*mProgressDialog?.setProgress(100)
                 //mProgressDialog?.dismiss();
