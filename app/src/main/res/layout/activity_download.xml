@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/web_view"/>
 
+
     <WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
@@ -24,6 +25,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <se.miun.ebni2100.dt031g.dialer.customviews.ProgressbarDownload
         android:id="@+id/custom_pb"

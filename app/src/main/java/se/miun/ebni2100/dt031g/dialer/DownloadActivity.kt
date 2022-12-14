@@ -2,9 +2,9 @@ package se.miun.ebni2100.dt031g.dialer
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.DownloadManager
+import android.app.ProgressDialog
+import android.content.Context
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.*
 import android.webkit.URLUtil
 import android.webkit.WebView
@@ -14,10 +14,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
+import androidx.core.content.ContextCompat.getSystemService
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityDownloadBinding
 import se.miun.ebni2100.dt031g.dialer.support.Util
-import java.io.File
+import java.io.*
 import java.lang.ref.WeakReference
 import java.net.URL
 
@@ -28,16 +28,6 @@ import java.net.URL
  */
 class DownloadActivity : AppCompatActivity() {
 
-    // REGISTER A DOWNLOAD-LISTENER
-    // onDownloadStart CHECK AND MANAGE THE DOWNLOADS BEING MADE
-    // DOWNLOAD & UNZIP IN BACKGROUND THREAD (COROUTINE)
-    // PROVIDE LOCATION TO STORE IN THE INTENT
-    // USE THE CLASSES 'URL' AND 'URLConnection' TO CREATE InputStream TO THE FILE BEING DOWNLOADED
-    // USE Util.unzip FOR THE DOWNLOADED FILE
-    // WHILE BEING DOWNLOADED, USE ProgressDialog
-
-
-
     var binding : ActivityDownloadBinding? = null
     lateinit var webView : WebView
     lateinit var webSite : String
@@ -45,6 +35,8 @@ class DownloadActivity : AppCompatActivity() {
     var triggered = false
     private lateinit var urlDownload : String
     private lateinit var downLoadAsync : AsyncTask<URL, Int, Unit>
+
+
 
     @SuppressLint("SetJavaScriptEnabled")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -59,22 +51,11 @@ class DownloadActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         initWebView()
 
-
-        //if(savedInstanceState != null)
-        //    isWorking = savedInstanceState.getBoolean("savedBooleanWork")
-
-        //executorService.execute(this::setDownloadListener)
-        //setDownloadListener()
-        //createDownloadListener()
-        //onDownloadComplete()
-
-        // Initiate WebView and load URL.
-        //binding?.webView?.webViewClient  = WebViewClient()
-        //binding?.webView?.loadUrl("https://dt031g.programvaruteknik.nu/dialer/voices/")
-
-        // enable the javascript settings
-        //binding?.webView?.settings?.javaScriptEnabled  = true
-
+        mProgressDialog = ProgressDialog(this)
+        mProgressDialog!!.setCancelable(true)
+        mProgressDialog!!.setIndeterminate(true)
+        mProgressDialog!!.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+        mProgressDialog!!.setMessage("Downloading...");
     }
 
 
@@ -89,8 +70,6 @@ class DownloadActivity : AppCompatActivity() {
             webSite = intent.getStringExtra("url").toString()
             //destDir = intent.getStringExtra("dir").toString()
             destDir = "/data/user/0/se.miun.ebni2100.dt031g.dialer/files/voices/"
-
-
 
             webView.loadUrl(webSite)
             webView.settings.javaScriptEnabled = true
@@ -108,6 +87,7 @@ class DownloadActivity : AppCompatActivity() {
                             URLUtil.guessFileName(url, null, null),
                             url, destDir
                         ).execute(URL(url))
+                        mProgressDialog?.show();
                     }else{
                         requestWriteStoragePermission()
                         requestReadStoragePermission()
@@ -154,14 +134,139 @@ class DownloadActivity : AppCompatActivity() {
     }
 
     companion object{
+
+        private var mProgressDialog: ProgressDialog? = null
+        private var mProgressStatus = 0
+
         class DownloadAsync constructor(activity: DownloadActivity, private val fileName: String, private val url: String, private val destDir: String): AsyncTask<URL, Int, Unit>(){
 
 
             private val weakRef: WeakReference<DownloadActivity> = WeakReference(activity)
+            private var progress: Int = 0
+            private var downloadedLength: Int = 0
+            private lateinit var mWakeLock: PowerManager.WakeLock
+            @SuppressLint("StaticFieldLeak")
+            var context: Context
 
-            @SuppressLint("SdCardPath")
+            init {
+                this.context = activity
+            }
+
+            @SuppressLint("SdCardPath", "RestrictedApi", "Range")
             @Deprecated("Deprecated in Java")
             override fun doInBackground(vararg urls: URL?) {
+
+                urls.first()?.let { url ->
+
+                    try {
+                        val connection = url.openConnection().also { it?.connect() }
+                        val length = connection?.contentLength
+                        val input = BufferedInputStream(url.openStream(), 100 * 1024)
+                        val data = ByteArray(1024)
+
+                        val root = Environment.getExternalStorageDirectory().toString()
+
+                        val output = FileOutputStream("$root/Download/$fileName")
+                        println("DownloadActivity doInBackground root: ${"$root/Download/$fileName"}")
+
+                        var count = 0   // how much it downloads right now
+                        var total = 0   // how much it has totally downloaded
+
+                        // until the count amount is above -1
+                        while (count > -1) {
+                            count = input.read(data)
+                            if (count == -1){
+                                break
+                            }
+
+                            total += count
+                            if (length != null) {
+                                println("this is the length: $length")
+                                if (length > 0){
+                                    publishProgress((total * 100) / length)
+                                }
+                            }
+                            output.write(data, 0, count)
+                            Thread.sleep(20)
+                            println("in while loop count: $count and total $total")
+                        }
+
+                        println("now it is done!")
+
+                        if (Util.unzip(File("$root/Download/$fileName"), File(destDir))){
+                            println("it was successful hallåja")
+                        } else {
+                            println("it was NOT successful hallåja")
+                        }
+
+                        output.flush()
+                        output.close()
+                        input.close()
+
+                    } catch (e: Exception) {
+                        println("DownloadActivity doInBackground exception: ${e.message} and $e")
+                    }
+                    try {
+                        Thread.sleep(3000)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+                    /*var input: InputStream? = null
+                var output: OutputStream? = null
+                var connection: HttpURLConnection? = null
+
+                try {
+                    connection = urls.openConnection() as HttpURLConnection
+                    connection.connect()
+
+                    if (connection.responseCode != HttpURLConnection.HTTP_OK){
+                        return
+                    }
+
+                    val fileLength: Int = connection.contentLength
+                    input = connection.inputStream
+                    output = FileOutputStream(Environment.getExternalStorageDirectory().toString() +"/Download/" + fileName)
+
+                    val data = ByteArray(4096)
+                    var total: Long = 0
+                    var count: Int
+
+                    while ((count = input.read(data)) != -1) {
+                        // allow canceling with back button
+                        if (isCancelled()) {
+                            input.close();
+                            return
+                        }
+                        total += count;
+                        // publishing the progress....
+                        if (fileLength > 0) // only if total length is known
+                            publishProgress((total * 100 / fileLength).toInt())
+                        output.write(data, 0, count)
+
+                        val path = Environment.getExternalStorageDirectory().toString() +"/Download/" + fileName
+
+                        if (Util.unzip(File(path), File(destDir))){
+                            println("it was successful hallåja")
+                        } else {
+                            println("it was NOT successful hallåja")
+                        }
+                    }
+                } catch (e :Exception){
+                    e.printStackTrace()
+                } finally {
+                    try {
+                        if (output != null)
+                            output.close();
+                        if (input != null)
+                            input.close();
+                    } catch (ignored: IOException) {
+                    }
+                    connection?.disconnect()
+                }*/
+
+                    /*
+                val downloadReference: Long
 
                 val request = DownloadManager.Request(Uri.parse(url))
                 request.allowScanningByMediaScanner()
@@ -169,7 +274,25 @@ class DownloadActivity : AppCompatActivity() {
 
                 request.setDestinationInExternalPublicDir( Environment.DIRECTORY_DOWNLOADS, fileName )
                 val dm = weakRef.get()?.getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-                dm.enqueue(request)
+                downloadReference = dm.enqueue(request)
+
+                val myDownloadQuery = DownloadManager.Query()
+                myDownloadQuery.setFilterById(downloadReference)
+                val c: Cursor = dm.query(myDownloadQuery)
+
+                if (c.moveToFirst()) {
+                    val totalSizeIndex: Int =
+                        c.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES)
+                    val downloadedIndex: Int =
+                        c.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR)
+                    val totalSize: Int = c.getInt(totalSizeIndex)
+                    val downloaded: Int = c.getInt(downloadedIndex)
+                    if (totalSize != -1) {
+                        mProgressStatus = ((downloaded * 100.0 / totalSize).toInt())
+                    }
+                    println("hej in do background: " + mProgressStatus)
+                    publishProgress(mProgressStatus)
+                }
 
                 val path = Environment.getExternalStorageDirectory().toString() +"/Download/" + fileName
 
@@ -179,75 +302,84 @@ class DownloadActivity : AppCompatActivity() {
                     println("it was NOT successful hallåja")
                 }
 
-                Thread.sleep(20)
+                Thread.sleep(3000)*/
 
-                /* urls.first()?.let{ url ->
-
-                     try{
-                         val connection = url.openConnection().also { it?.connect() }
-                         val length = connection?.contentLength
-                         val input = BufferedInputStream(url.openStream(),100*1024)
-                         val data =  ByteArray(1024)
-
-
-                         val root = Environment.getExternalStorageDirectory().toString()
-
-                         val output =  FileOutputStream(root+"/"+fileName)
-                         println("DownloadActivity doInBackground root: ${root+"/"+fileName}")
-
-                         var count = 0
-                         var total = 0
-                         while ( count != -1){
-                             count = input.read(data)
-                             total += count
-                             output.write(data, 0, count)
-                         }
-
-                         output.flush()
-                         output.close()
-                         input.close()
-                     }catch (e: Exception){
-                         println("DownloadActivity doInBackground exception: ${e.message}")
-                     }*/
-
-
-
-                /* try{
-                     Thread.sleep(3000)
-                 }catch (e :Exception){
-                     e.printStackTrace()
-                 }*/
             }
-
-
+            @RequiresApi(Build.VERSION_CODES.O)
             @Deprecated("Deprecated in Java")
             override fun onPreExecute() {
                 super.onPreExecute()
-                weakRef.get()?.binding?.customPb?.setTitle(fileName)
-                weakRef.get()?.binding?.customPb?.isVisible = true
+
+                mWakeLock =
+                    (context.getSystemService(POWER_SERVICE) as PowerManager).run {
+                        newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, javaClass.name).apply {
+                            acquire(10*60*1000L /*10 minutes*/)
+                        }
+                    }
+                mProgressDialog?.show()
+                //mProgressStatus = 0
+
+            /*weakRef.get()?.binding?.customPb?.setTitle(fileName)
+            weakRef.get()?.binding?.customPb?.setProgress(progress)
+            weakRef.get()?.binding?.customPb?.isVisible = true*/
+                //println("in pre-execute hej $mProgressStatus")
             }
+
+            @Deprecated("Deprecated in Java")
+            override fun onProgressUpdate(vararg values: Int?) {
+                super.onProgressUpdate(*values)
+                mProgressDialog?.setIndeterminate(false)
+                mProgressDialog?.setMax(100)
+                values[0]?.let { mProgressDialog?.setProgress(it) }
+                //mProgressDialog?.setProgress(mProgressStatus)
+                /*weakRef.get()?.binding?.customPb?.setTitle(fileName)
+                values[0]?.let { weakRef.get()?.binding?.customPb?.setProgress(it) }
+                weakRef.get()?.binding?.customPb?.isVisible = true
+                println("in progress update hej " + values[0])*/
+            }
+
 
             @Deprecated("Deprecated in Java")
             override fun onPostExecute(result: Unit?) {
                 super.onPostExecute(result)
+                mWakeLock.release()
+                mProgressDialog?.dismiss()
+                Toast.makeText(context,"Download Completed", Toast.LENGTH_SHORT).show()
+                /*if (result != null)
+                    Toast.makeText(context,"Download errorhaj: "+result, Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(context,"File downloaded", Toast.LENGTH_SHORT).show();
 
-                weakRef.get()?.binding?.customPb?.isVisible = false
+                */
+                /*mProgressDialog?.setProgress(100)
+                //mProgressDialog?.dismiss();
+
+                mProgressDialog?.dismiss()
+
+                //weakRef.get()?.binding?.customPb?.isVisible = false
                 weakRef.get()?.let{
                     it.triggered = false
                     Toast.makeText(it,"Download Completed", Toast.LENGTH_SHORT).show()
-                }
+                }*/
             }
 
+            /*@RequiresApi(Build.VERSION_CODES.O)
             @Deprecated("Deprecated in Java",
                 ReplaceWith("super.onProgressUpdate(*values)", "android.os.AsyncTask")
             )
             override fun onProgressUpdate(vararg values: Int?) {
                 super.onProgressUpdate(*values)
-            }
-
+                mProgressDialog?.setProgress(mProgressStatus)
+                mProgressDialog?.setIndeterminate(false);
+                mProgressDialog?.setMax(100)
+                values[0]?.let { mProgressDialog?.setProgress(it) }
+                /*weakRef.get()?.binding?.customPb?.setTitle(fileName)
+                values[0]?.let { weakRef.get()?.binding?.customPb?.setProgress(it) }
+                weakRef.get()?.binding?.customPb?.isVisible = true
+                println("in progress update hej " + values[0])*/
+            }*/
         }
     }
-
 
     /**
      * Register the download-listener.
