@@ -26,8 +26,6 @@ class CallListActivity : AppCompatActivity() {
         binding = ActivityCallListBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        // Add toolbar.
-        setSupportActionBar(binding?.toolbarList)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         displayStoredNumbers()

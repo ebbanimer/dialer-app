@@ -35,8 +35,8 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         // Add toolbar.
-        setSupportActionBar(binding?.toolBarSettings)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //setSupportActionBar(binding?.toolBarSettings)
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         if (savedInstanceState == null) {
             supportFragmentManager

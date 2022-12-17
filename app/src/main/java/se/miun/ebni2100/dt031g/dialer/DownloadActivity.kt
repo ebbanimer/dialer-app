@@ -43,7 +43,6 @@ class DownloadActivity : AppCompatActivity() {
         binding = ActivityDownloadBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        setSupportActionBar(binding!!.toolBarDownload)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         initWebView()
 

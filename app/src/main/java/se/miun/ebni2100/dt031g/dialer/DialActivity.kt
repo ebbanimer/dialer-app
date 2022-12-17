@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -39,43 +38,20 @@ class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
         binding = ActivityDialBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        // Add toolbar.
-        setSupportActionBar(binding?.toolbarDial)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding
 
         setDialPadsListener()
         setOnMakeCallListener()
 
     }
 
-    /**
-     * Display alert for permission to call.
-     */
-    private fun displayRationale(){
-        val builder = AlertDialog.Builder(this)
-            .setTitle(R.string.call_title)
-            .setMessage(R.string.call_description)
-            .setPositiveButton(R.string.ok_dialog) { _, _ ->  sendUserToSettings() }
-            .setNegativeButton(R.string.cancel_dialog) { dialog, _ -> dialog.dismiss() }
 
-        // Create alert with created dialog.
-        val alert = builder.create()
-        alert.show()
-    }
-
-    private fun sendUserToSettings(){
-        Intent().apply {
-            action = ACTION_APPLICATION_DETAILS_SETTINGS
-            data = Uri.fromParts("package", packageName, null)
-        }.also { startActivity(it) }
-    }
 
     private val requestPermissionLauncher = registerForActivityResult( ActivityResultContracts.RequestPermission() ) { isGranted: Boolean ->
         if (isGranted) {
             binding?.dialInput?.makePhoneCall()
         } else {
-            displayRationale()
+            binding?.dialInput?.makeDialCall()
         }
     }
 
@@ -119,7 +95,14 @@ class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
                 true
             }
             R.id.download_option -> {
-                startActivity(Intent(this, DownloadActivity::class.java))
+                val intent = Intent(this, DownloadActivity::class.java)
+                intent.putExtra(
+                    "url", getString(R.string.url_web)
+                )
+                intent.putExtra(
+                    "dir", getString(R.string.new_dir)
+                )
+                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -152,5 +135,32 @@ class DialActivity : AppCompatActivity(), DialpadButton.OnClickListener {
                 requestCallPhonePermission()
             }
         }
+    }
+
+
+    /**
+     * Display alert for permission to call.
+     */
+    private fun displayRationale(){
+        val builder = AlertDialog.Builder(this)
+            .setTitle(R.string.call_title)
+            .setMessage(R.string.call_description)
+            .setPositiveButton(R.string.ok_dialog) { _, _ ->
+                //sendUserToSettings() }
+                binding?.dialInput?.makePhoneCall() }
+            .setNegativeButton(R.string.cancel_dialog) { dialog, _ ->
+                dialog.dismiss()
+            }
+
+        // Create alert with created dialog.
+        val alert = builder.create()
+        alert.show()
+    }
+
+    private fun sendUserToSettings(){
+        Intent().apply {
+            action = ACTION_APPLICATION_DETAILS_SETTINGS
+            data = Uri.fromParts("package", packageName, null)
+        }.also { startActivity(it) }
     }
 }

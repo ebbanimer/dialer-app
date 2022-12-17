@@ -70,7 +70,6 @@ class DialInput @JvmOverloads constructor(
             binding.dialText.text = ""
             true
         }
-
     }
 
     fun makePhoneCall(){
@@ -78,6 +77,16 @@ class DialInput @JvmOverloads constructor(
         if (!phoneToCall.isNullOrEmpty()){
             println("access granted")
             Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneToCall")).also { context.startActivity(it) }
+        } else {
+            Toast.makeText(context, "Enter phone number", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun makeDialCall(){
+        val phoneToCall = binding.dialText.text
+        if (!phoneToCall.isNullOrEmpty()){
+            println("access granted")
+            Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneToCall")).also { context.startActivity(it) }
         } else {
             Toast.makeText(context, "Enter phone number", Toast.LENGTH_SHORT).show()
         }
