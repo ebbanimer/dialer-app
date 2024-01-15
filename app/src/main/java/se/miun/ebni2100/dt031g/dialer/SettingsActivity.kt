@@ -5,11 +5,17 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.ListPreference
+import androidx.preference.ListPreference.SimpleSummaryProvider
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import se.miun.ebni2100.dt031g.dialer.databinding.SettingsActivityBinding
+import se.miun.ebni2100.dt031g.dialer.support.SoundPlayer
+import se.miun.ebni2100.dt031g.dialer.support.Util
+import java.io.File
 
 /**
  * Activity class for settings.
@@ -29,8 +35,8 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         // Add toolbar.
-        setSupportActionBar(binding?.toolBarSettings)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //setSupportActionBar(binding?.toolBarSettings)
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         if (savedInstanceState == null) {
             supportFragmentManager
@@ -71,6 +77,14 @@ class SettingsActivity : AppCompatActivity() {
             return sharedPreferences.getBoolean(context.getString(R.string.store_key), true)
         }
 
+        /**
+         * Provide to the user which the selected voice is.
+         */
+        fun voiceToUse(context: Context): String? {
+            val sharedPreferences: SharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context)
+            return sharedPreferences.getString(context.getString(R.string.voice_key), "mamacita_us")
+        }
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
@@ -91,6 +105,40 @@ class SettingsActivity : AppCompatActivity() {
                 clearStoredNumbers()
                 true
             }
+
+            // Get list preferences
+            val voicePref: ListPreference? = findPreference(getString(R.string.voice_key))
+            val sharedPreferences: SharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(context)
+
+            // Retrieve the chosen voice from shared preferences.
+            val initVoice = sharedPreferences.getString((context?.getString(R.string.voice_key) ?: String) as String?, "mamacita_us")
+
+            // Set the selected voice in SoundPlayer.
+            if (initVoice != null) {
+                context?.let { SoundPlayer.getInstance(it) }?.setSelectedVoice(initVoice)
+            } else {
+                // If voice is null, send default mamacita.
+                context?.let { SoundPlayer.getInstance(it) }?.setSelectedVoice(Util.MAMACITA_DIR)
+            }
+
+            // Display chosen voice in summary and populate list-preferences.
+            voicePref?.summary = initVoice
+            voicePref?.entries = createList()
+            voicePref?.entryValues = createList()
+
+            // If the selected voice changes, change the summary and update voice in SoundPlayer.
+            voicePref?.setOnPreferenceChangeListener { preference, newValue ->
+                if (preference is ListPreference) {
+                    val index = preference.findIndexOfValue(newValue.toString())
+                    val entry = preference.entries[index]
+                    voicePref.summary = entry
+                    context?.let { SoundPlayer.getInstance(it) }?.setSelectedVoice(entry as String)
+                }
+
+                true
+            }
+
         }
 
         /**
@@ -101,6 +149,23 @@ class SettingsActivity : AppCompatActivity() {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val editor = prefs.edit()
             editor.putStringSet(NUMBER_SET_KEY, toSave).apply()
+        }
+
+        /**
+         * Create and populate list-preferences based on files in local storage.
+         */
+        private fun createList(): Array<String>{
+            val mutableList : MutableList<String> = arrayListOf()
+
+            File(getString(R.string.new_dir)).walk().forEach {
+                if (it.isDirectory){
+                    if (it.name != "voices"){
+                        mutableList.add(it.name)
+                    }
+                }
+            }
+
+            return mutableList.toTypedArray()
         }
     }
 }

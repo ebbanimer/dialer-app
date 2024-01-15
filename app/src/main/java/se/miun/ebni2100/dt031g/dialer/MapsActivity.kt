@@ -29,7 +29,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbarMap)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.

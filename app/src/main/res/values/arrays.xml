@@ -9,4 +9,16 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <!-- Voice preferences -->
+
+    <string-array name="entries">
+        <item>mamacita_us</item>
+    </string-array>
+
+    <string-array name="entry_values">
+        <item>mamacita_us</item>
+    </string-array>
+
+
 </resources>

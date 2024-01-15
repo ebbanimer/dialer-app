@@ -141,6 +141,4 @@
         app:title="@string/dialpad_pound_title"
         app:message="" />
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

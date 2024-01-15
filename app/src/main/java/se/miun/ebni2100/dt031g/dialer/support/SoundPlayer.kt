@@ -6,6 +6,7 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Build
+import se.miun.ebni2100.dt031g.dialer.SettingsActivity.Companion.voiceToUse
 import se.miun.ebni2100.dt031g.dialer.customviews.DialpadButton
 import java.io.File
 
@@ -20,6 +21,7 @@ class SoundPlayer private constructor(private val context: Context) {
         ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, POUND, STAR
     }
 
+    private var selectedVoice: String? = null
     private var soundPool: SoundPool? = null
     private lateinit var soundIds: MutableMap<Dials, Int>
 
@@ -28,7 +30,7 @@ class SoundPlayer private constructor(private val context: Context) {
      */
     init {
         createSoundPool()
-        createSounds()
+        voiceToUse(context)?.let { createSounds(it) }
     }
 
     /**
@@ -45,6 +47,14 @@ class SoundPlayer private constructor(private val context: Context) {
             }
             return theInstance!!
         }
+    }
+
+    /**
+     * Gets the selected voice and creates new sounds.
+     */
+    fun setSelectedVoice(voice: String){
+        this.selectedVoice = voice
+        createSounds(selectedVoice!!)
     }
 
     /**
@@ -74,30 +84,30 @@ class SoundPlayer private constructor(private val context: Context) {
     /**
      * Add sounds to hashmap
      */
-    private fun createSounds() {
+    private fun createSounds(voice: String) {
         soundIds = mutableMapOf()
 
         val songFile0 =
-            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "zero.mp3")
-        val songFile1 = Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "one.mp3")
-        val songFile2 = Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "two.mp3")
+            Util.getDirForVoice(context, voice + File.separator + "zero.mp3")
+        val songFile1 = Util.getDirForVoice(context, voice + File.separator + "one.mp3")
+        val songFile2 = Util.getDirForVoice(context, voice + File.separator + "two.mp3")
         val songFile3 =
-            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "three.mp3")
+            Util.getDirForVoice(context, voice + File.separator + "three.mp3")
         val songFile4 =
-            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "four.mp3")
+            Util.getDirForVoice(context, voice + File.separator + "four.mp3")
         val songFile5 =
-            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "five.mp3")
-        val songFile6 = Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "six.mp3")
+            Util.getDirForVoice(context, voice + File.separator + "five.mp3")
+        val songFile6 = Util.getDirForVoice(context, voice + File.separator + "six.mp3")
         val songFile7 =
-            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "seven.mp3")
+            Util.getDirForVoice(context, voice + File.separator + "seven.mp3")
         val songFile8 =
-            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "eight.mp3")
+            Util.getDirForVoice(context, voice + File.separator + "eight.mp3")
         val songFile9 =
-            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "nine.mp3")
+            Util.getDirForVoice(context, voice + File.separator + "nine.mp3")
         val songFilePound =
-            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "pound.mp3")
+            Util.getDirForVoice(context, voice + File.separator + "pound.mp3")
         val songFileStar =
-            Util.getDirForVoice(context, Util.MAMACITA_DIR + File.separator + "star.mp3")
+            Util.getDirForVoice(context, voice + File.separator + "star.mp3")
 
         soundIds[Dials.ZERO] = soundPool?.load(songFile0.absolutePath, 1) ?: 1
         soundIds[Dials.ONE] = soundPool?.load(songFile1.absolutePath, 1) ?: 1

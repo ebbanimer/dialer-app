@@ -1,12 +1,16 @@
 package se.miun.ebni2100.dt031g.dialer
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import se.miun.ebni2100.dt031g.dialer.databinding.ActivityMainBinding
 import se.miun.ebni2100.dt031g.dialer.support.Util
+
 
 /**
  * Activity class for main..
@@ -32,19 +36,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         clickEvents()
+        PreferenceManager.setDefaultValues(this, R.xml.root_preferences, true)
     }
 
     override fun onResume() {
         super.onResume()
         Util.getInternalStorageDir(this)
-
     }
 
     override fun onPause() {
         super.onPause()
-        if (!Util.defaultVoiceExist(this)){
-            Util.copyDefaultVoiceToInternalStorage(this)
-        }
+        Util.copyDefaultVoiceToInternalStorage(this)
     }
 
     /**
@@ -55,6 +57,18 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, DialActivity::class.java)
             startActivity(intent)
         }
+
+        binding.downloadBtn.setOnClickListener {
+            val intent = Intent(this, DownloadActivity::class.java)
+            intent.putExtra(
+                "url", getString(R.string.url_web)
+                )
+            intent.putExtra(
+                "dir", getString(R.string.new_dir)
+            )
+            startActivity(intent)
+        }
+
 
         binding.callBtn.setOnClickListener {
             val intent = Intent(this, CallListActivity::class.java)

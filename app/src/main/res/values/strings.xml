@@ -25,6 +25,11 @@
 
     <string name="title_activity_maps">MapsActivity</string>
 
+    <!-- Voice settings preferences -->
+    <string name="voice_key">"choose_voice"</string>
+    <string name="voice_title">"Voices"</string>
+    <string name="voice_summary">mamacita_us</string>
+
     <!-- About dialog -->
     <string name="about_title">About</string>
     <string name="about_dialog">This app is supposed to mimic the keypad
@@ -36,6 +41,14 @@
                 - Show on a Map where previous calls are dialed from</string>
     <string name="ok_dialog">OK</string>
     <string name="already_seen">You have already seen the About-dialog</string>
+    <string name="download_voices">DOWNLOAD VOICES</string>
+    <string name="setting">Setting</string>
+    <string name="download_voices_small">Download Voices</string>
+
+    <!-- Phone call dialog -->
+    <string name="call_title">Call Permission</string>
+    <string name="call_description">This permission is required in order to make phone calls</string>
+    <string name="cancel_dialog">Cancel</string>
 
     <!-- Dial-pads strings -->
     <string name="dialpad_0_title">0</string>
@@ -60,5 +73,19 @@
     <string name="dialpad_7_msg">PGRS</string>
     <string name="dialpad_8_msg">TUV</string>
     <string name="dialpad_9_msg">WXYZ</string>
+
+    <!-- DOWNLOAD STRINGS -->
+
+    <string name="url_web">https://dt031g.programvaruteknik.nu/dialer/voices/</string>
+    <string name="new_dir">/data/user/0/se.miun.ebni2100.dt031g.dialer/files/voices/</string>
+    <string name="_33">33%</string>
+
+    <string name="request_download">Write External Storage permission allows us to save files. Please allow this " +
+                        "permission in App Settings.</string>
+    <string name="download_title">Downloading…</string>
+    <string name="download_success">File downloaded.</string>
+    <string name="download_fail">Download failed.</string>
+
+
 
 </resources>

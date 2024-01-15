@@ -23,9 +23,21 @@
         android:layout_marginBottom="10dp"
         android:text="@string/dial"
         style="@style/Base_ButtonStyle"
+        app:layout_constraintBottom_toTopOf="@+id/download_btn"
+        app:layout_constraintStart_toStartOf="@+id/settings_btn"
+        app:layout_constraintEnd_toEndOf="@+id/settings_btn"  />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/download_btn"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/download_voices"
+        style="@style/Base_ButtonStyle"
         app:layout_constraintBottom_toTopOf="@+id/call_btn"
         app:layout_constraintStart_toStartOf="@+id/settings_btn"
         app:layout_constraintEnd_toEndOf="@+id/settings_btn"  />
+
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/call_btn"

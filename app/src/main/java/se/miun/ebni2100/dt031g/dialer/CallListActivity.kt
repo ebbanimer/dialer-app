@@ -1,6 +1,5 @@
 package se.miun.ebni2100.dt031g.dialer
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -27,8 +26,6 @@ class CallListActivity : AppCompatActivity() {
         binding = ActivityCallListBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        // Add toolbar.
-        setSupportActionBar(binding?.toolbarList)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         displayStoredNumbers()
@@ -47,8 +44,12 @@ class CallListActivity : AppCompatActivity() {
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
-            R.id.setting_option -> {
-                startActivity(Intent(this,SettingsActivity::class.java))
+            R.id.delete_option -> {
+                val toSave : MutableSet<String>? = null
+                val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+                val editor = prefs.edit()
+                editor.putStringSet(SettingsActivity.NUMBER_SET_KEY, toSave).apply()
+                binding?.callList?.text = ""
                 true
             }
             else -> super.onOptionsItemSelected(item)

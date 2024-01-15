@@ -1,11 +1,19 @@
 package se.miun.ebni2100.dt031g.dialer.customviews
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.AttributeSet
 import android.view.View
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import se.miun.ebni2100.dt031g.dialer.R
 import se.miun.ebni2100.dt031g.dialer.SettingsActivity
@@ -25,6 +33,7 @@ class DialInput @JvmOverloads constructor(
 
     var binding : DialinputBinding
 
+
     /**
      * Initialize binding.
      */
@@ -33,7 +42,7 @@ class DialInput @JvmOverloads constructor(
             View.inflate(context, R.layout.dialinput, this)
         )
 
-        clickEvents();
+        deleteButtonClickListener()
     }
 
     /**
@@ -44,9 +53,9 @@ class DialInput @JvmOverloads constructor(
     }
 
     /**
-     * Add click-events for buttons.
+     * Add click-events for delete button.
      */
-    private fun clickEvents(){
+    private fun deleteButtonClickListener(){
 
         // Get current string, pop last character, and update view.
         binding.imgDelete.setOnClickListener {
@@ -55,20 +64,31 @@ class DialInput @JvmOverloads constructor(
             binding.dialText.text = newS
         }
 
+
         // Erase all numbers when long click.
         binding.imgDelete.setOnLongClickListener {
             binding.dialText.text = ""
             true
         }
+    }
 
-        // Create new dial intent.
-        binding.imgPhone.setOnClickListener {
-            if (shouldStoreNumbers(context)){
-                saveNumber(binding.dialText.text.toString())
-            }
-            val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:" + binding.dialText.text)
-            context.startActivity(intent)
+    fun makePhoneCall(){
+        val phoneToCall = binding.dialText.text
+        if (!phoneToCall.isNullOrEmpty()){
+            println("access granted")
+            Intent(Intent.ACTION_CALL, Uri.parse("tel:$phoneToCall")).also { context.startActivity(it) }
+        } else {
+            Toast.makeText(context, "Enter phone number", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun makeDialCall(){
+        val phoneToCall = binding.dialText.text
+        if (!phoneToCall.isNullOrEmpty()){
+            println("access granted")
+            Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneToCall")).also { context.startActivity(it) }
+        } else {
+            Toast.makeText(context, "Enter phone number", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -85,5 +105,17 @@ class DialInput @JvmOverloads constructor(
         }
         val editor = prefs.edit()
         editor.putStringSet(SettingsActivity.NUMBER_SET_KEY, toSave).apply()
+    }
+
+    /**
+     * When icon is clicked, store number if desired, and invoke listener.
+     */
+    fun onMakeCallListener(listener:() -> Unit){
+        binding.imgPhone.setOnClickListener {
+            if (shouldStoreNumbers(context)){
+                saveNumber(binding.dialText.text.toString())
+            }
+            listener.invoke()
+        }
     }
 }

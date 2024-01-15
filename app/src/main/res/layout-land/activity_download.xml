@@ -4,27 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DialActivity">
+    tools:context=".DownloadActivity">
 
 
-    <se.miun.ebni2100.dt031g.dialer.customviews.DialInput
-        android:id="@+id/dial_input"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        style="@style/Base_ToolbarStyle"
-        app:layout_constraintBottom_toTopOf="@id/dialpad"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <se.miun.ebni2100.dt031g.dialer.customviews.Dialpad
-        android:id="@+id/dialpad"
+    <WebView
+        android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <se.miun.ebni2100.dt031g.dialer.customviews.ProgressbarDownload
+        android:id="@+id/custom_pb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/web_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dial_input"/>
-
+        android:visibility="invisible"
+        tools:layout_height="55dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
